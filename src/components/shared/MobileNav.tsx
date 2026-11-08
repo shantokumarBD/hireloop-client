@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { navItems } from "./NavLinks";
+import Logo from "./Logo";
 
 import {
   Sheet,
@@ -35,7 +36,7 @@ export default function MobileNav() {
             <SheetHeader className="text-left pb-4 border-b border-white/10">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
               <div onClick={() => setOpen(false)}>
-                logo
+                <Logo />
               </div>
             </SheetHeader>
 
@@ -56,7 +57,7 @@ export default function MobileNav() {
           {!user && (
             <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
               <Link
-                href="/log-in"
+                href="/sign-in"
                 onClick={() => setOpen(false)}
                 className="w-full text-center py-2 rounded-xl text-sm border border-white/10 text-[#8B7BF7] hover:bg-white/5 transition-colors"
               >

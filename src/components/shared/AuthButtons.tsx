@@ -20,7 +20,7 @@ export default function AuthButtons() {
   return (
     <div className="flex items-center gap-5">
       <Link
-        href="/log-in"
+        href="/sign-in"
         className="hidden sm:inline-flex text-sm font-medium text-[#7C65E8] hover:text-[#9A85FF] transition-colors"
       >
         Sign In

@@ -10,7 +10,7 @@ export interface UserSession {
   name: string;
   email: string;
   image?: string | null;
-  role?: "seeker" | "recruiter" | "admin" | string;
+  role?: "seeker" | "recruiter" | "admin" | string | null;
 }
 
 // ৩. জব লিস্টিং টাইপ (HireLoop Core)
