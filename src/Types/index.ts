@@ -1,19 +1,30 @@
+import { LucideIcon } from "lucide-react";
+
 // ১. নেভিগেশন আইটেম টাইপ
 export interface NavItem {
   name: string;
   href: string;
 }
 
-// ২. ইউজার সেশন টাইপ
+// ২. ইউজার রোল ও সেশন টাইপ
+export type Role = "seeker" | "recruiter" | "admin";
+
 export interface UserSession {
   id: string;
   name: string;
   email: string;
   image?: string | null;
-  role?: "seeker" | "recruiter" | "admin" | string | null;
+  role?: Role | string | null;
 }
 
-// ৩. জব লিস্টিং টাইপ (HireLoop Core)
+// ৩. ড্যাশবোর্ড সাইডবার মেনু টাইপ
+export interface DashboardMenuItem {
+  name: string;
+  url: string;
+  icon: LucideIcon;
+}
+
+// ৪. জব লিস্টিং টাইপ (HireLoop Core)
 export interface Job {
   _id: string;
   title: string;
@@ -30,7 +41,7 @@ export interface Job {
   createdAt?: string | Date;
 }
 
-// ৪. কোম্পানি প্রোফাইল টাইপ
+// ৫. কোম্পানি প্রোফাইল টাইপ
 export interface Company {
   _id: string;
   name: string;
@@ -44,7 +55,7 @@ export interface Company {
   status: "Pending" | "Approved" | "Rejected";
 }
 
-// ৫. জব অ্যাপ্লিকেশন টাইপ
+// ৬. জব অ্যাপ্লিকেশন টাইপ
 export interface Application {
   _id: string;
   jobId: string;
