@@ -41,25 +41,24 @@ export interface Job {
   createdAt?: string | Date;
 }
 
-// Create Job Input Type
 export interface CreateJobInput {
+  _id: string;
   title: string;
   companyName: string;
   category: string;
   jobType: string;
   isRemote: boolean;
   location: string;
-  deadline?: string;
   salaryMin: number;
   salaryMax: number;
   salaryFrequency: string;
-  responsibilities: string;
-  requirements: string;
-  status?: string;
+  applicantsCount?: number;
+  status: string;
+  deadline: string;
   createdAt?: string;
 }
 
-// 5. Company Profile Type
+
 export interface Company {
   _id: string;
   name: string;
@@ -73,7 +72,7 @@ export interface Company {
   status: "Pending" | "Approved" | "Rejected";
 }
 
-// 6. Job Application Type
+
 export interface Application {
   _id: string;
   jobId: string;
