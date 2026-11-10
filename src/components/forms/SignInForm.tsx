@@ -14,7 +14,7 @@ export default function SignInForm() {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // ফর্ম সাবমিট হ্যান্ডলার (StudioSpace প্যাটার্ন: try-finally)
+  // Form submit handler (try-finally pattern)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMsg("");
@@ -45,7 +45,7 @@ export default function SignInForm() {
     }
   };
 
-  // গুগল দিয়ে ওয়ান-ক্লিক সাইন ইন
+  // One-click Google sign in
   const handleGoogleSignIn = async () => {
     setErrorMsg("");
     setIsGoogleLoading(true);
@@ -65,7 +65,7 @@ export default function SignInForm() {
 
   return (
     <div className="w-full max-w-[440px] rounded-2xl bg-[#0B0C10] border border-white/10 p-6 sm:p-8 shadow-2xl">
-      {/* লোগো ও হেডার */}
+      {/* Logo and Header */}
       <div className="flex flex-col items-center text-center mb-6">
         <Logo />
         <h1 className="mt-5 text-2xl sm:text-3xl font-bold text-white tracking-tight">
@@ -76,7 +76,7 @@ export default function SignInForm() {
         </p>
       </div>
 
-      {/* এরর মেসেজ অ্যালার্ট */}
+      {/* Error Message Alert */}
       {errorMsg && (
         <div className="mb-5 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2">
           <AlertCircle className="w-4 h-4 shrink-0" />
@@ -84,7 +84,7 @@ export default function SignInForm() {
         </div>
       )}
 
-      {/* গুগল দিয়ে ওয়ান-ক্লিক সাইন ইন */}
+      {/* One-click Google sign in button */}
       <button
         type="button"
         onClick={handleGoogleSignIn}
@@ -116,7 +116,7 @@ export default function SignInForm() {
         <span>{isGoogleLoading ? "Connecting..." : "Continue with Google"}</span>
       </button>
 
-      {/* ডিভাইডার */}
+      {/* Divider */}
       <div className="relative my-6 flex items-center justify-center">
         <div className="w-full border-t border-white/10" />
         <span className="absolute bg-[#0B0C10] px-3 text-xs text-zinc-500 uppercase tracking-wider">
@@ -124,9 +124,9 @@ export default function SignInForm() {
         </span>
       </div>
 
-      {/* সাইন ইন ফর্ম */}
+      {/* Sign In Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* ইমেইল ফিল্ড */}
+        {/* Email Field */}
         <div>
           <label
             htmlFor="email"
@@ -148,7 +148,7 @@ export default function SignInForm() {
           </div>
         </div>
 
-        {/* পাসওয়ার্ড ফিল্ড */}
+        {/* Password Field */}
         <div>
           <div className="flex items-center justify-between mb-1.5">
             <label
@@ -190,7 +190,7 @@ export default function SignInForm() {
           </div>
         </div>
 
-        {/* সাবমিট বাটন */}
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={isLoading || isGoogleLoading}
@@ -210,7 +210,7 @@ export default function SignInForm() {
         </button>
       </form>
 
-      {/* সাইন আপ লিঙ্ক */}
+      {/* Sign Up Link */}
       <p className="mt-6 text-center text-xs text-zinc-400">
         Don&apos;t have an account?{" "}
         <Link

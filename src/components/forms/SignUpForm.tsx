@@ -27,7 +27,7 @@ export default function SignUpForm() {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // ফর্ম সাবমিট হ্যান্ডলার (StudioSpace প্যাটার্ন: try-finally)
+  // Form submit handler (try-finally pattern)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -52,7 +52,7 @@ export default function SignUpForm() {
         return;
       }
 
-      // সফল হলে ফর্ম রিসেট ও রিডাইরেক্ট
+      // Reset form and redirect on success
       form.reset();
       await signOut();
       router.push("/sign-in");
@@ -62,12 +62,11 @@ export default function SignUpForm() {
         err instanceof Error ? err.message : "Something went wrong. Please try again.";
       setErrorMsg(message);
     } finally {
-      // StudioSpace এর মতো finally ব্লকে লোডিং বন্ধ করা হয়, যাতে বাটন কখনোই আটকে না থাকে
       setIsLoading(false);
     }
   };
 
-  // গুগল দিয়ে ওয়ান-ক্লিক সাইন আপ
+  // One-click Google sign up
   const handleGoogleSignUp = async () => {
     setErrorMsg("");
     setIsGoogleLoading(true);
@@ -88,7 +87,7 @@ export default function SignUpForm() {
 
   return (
     <div className="w-full max-w-[460px] rounded-2xl bg-[#0B0C10] border border-white/10 p-6 sm:p-8 shadow-2xl">
-      {/* লোগো ও হেডার */}
+      {/* Logo and Header */}
       <div className="flex flex-col items-center text-center mb-6">
         <Logo />
         <h1 className="mt-5 text-2xl sm:text-3xl font-bold text-white tracking-tight">
@@ -99,7 +98,7 @@ export default function SignUpForm() {
         </p>
       </div>
 
-      {/* এরর মেসেজ অ্যালার্ট */}
+      {/* Error Message Alert */}
       {errorMsg && (
         <div className="mb-5 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2">
           <AlertCircle className="w-4 h-4 shrink-0" />
@@ -107,7 +106,7 @@ export default function SignUpForm() {
         </div>
       )}
 
-      {/* রোল সিলেক্টর (Seeker, Recruiter, Admin) */}
+      {/* Role Selector (Seeker, Recruiter, Admin) */}
       <div className="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-white/5 border border-white/10 mb-6">
         <button
           type="button"
@@ -149,7 +148,7 @@ export default function SignUpForm() {
         </button>
       </div>
 
-      {/* গুগল দিয়ে ওয়ান-ক্লিক সাইন আপ */}
+      {/* One-click Google sign up */}
       <button
         type="button"
         onClick={handleGoogleSignUp}
@@ -181,7 +180,7 @@ export default function SignUpForm() {
         <span>{isGoogleLoading ? "Connecting..." : "Sign up with Google"}</span>
       </button>
 
-      {/* ডিভাইডার */}
+      {/* Divider */}
       <div className="relative my-6 flex items-center justify-center">
         <div className="w-full border-t border-white/10" />
         <span className="absolute bg-[#0B0C10] px-3 text-xs text-zinc-500 uppercase tracking-wider">
@@ -189,9 +188,9 @@ export default function SignUpForm() {
         </span>
       </div>
 
-      {/* সাইন আপ ফর্ম */}
+      {/* Sign Up Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* নাম ফিল্ড */}
+        {/* Full Name Field */}
         <div>
           <label
             htmlFor="name"
@@ -213,7 +212,7 @@ export default function SignUpForm() {
           </div>
         </div>
 
-        {/* ইমেইল ফিল্ড */}
+        {/* Email Field */}
         <div>
           <label
             htmlFor="email"
@@ -235,7 +234,7 @@ export default function SignUpForm() {
           </div>
         </div>
 
-        {/* পাসওয়ার্ড ফিল্ড */}
+        {/* Password Field */}
         <div>
           <label
             htmlFor="password"
@@ -270,7 +269,7 @@ export default function SignUpForm() {
           </div>
         </div>
 
-        {/* শর্তাবলি */}
+        {/* Terms & Conditions */}
         <div className="flex items-start gap-2 pt-1">
           <input
             id="terms"
@@ -291,7 +290,7 @@ export default function SignUpForm() {
           </label>
         </div>
 
-        {/* সাবমিট বাটন */}
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={isLoading || isGoogleLoading}
@@ -311,7 +310,7 @@ export default function SignUpForm() {
         </button>
       </form>
 
-      {/* সাইন ইন লিঙ্ক */}
+      {/* Sign In Link */}
       <p className="mt-6 text-center text-xs text-zinc-400">
         Already have an account?{" "}
         <Link

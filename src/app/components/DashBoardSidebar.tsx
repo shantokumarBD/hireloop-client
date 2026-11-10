@@ -25,9 +25,9 @@ import {
 import Logo from "@/components/shared/Logo";
 import { Role, DashboardMenuItem } from "@/Types";
 
-// ৩টি রোলের হুবহু মেনু আইটেম (ইমেজ অনুযায়ী)
+// Role-based menu configuration
 const menuItemByRole: Record<Role, DashboardMenuItem[]> = {
-  // Image 3: Seeker Menu
+  // Seeker Menu
   seeker: [
     { name: "Dashboard", url: "/dashboard/job-seeker", icon: LayoutDashboard },
     { name: "Jobs", url: "/dashboard/job-seeker/jobs", icon: Briefcase },
@@ -36,7 +36,7 @@ const menuItemByRole: Record<Role, DashboardMenuItem[]> = {
     { name: "Billing", url: "/dashboard/job-seeker/billing", icon: CreditCard },
     { name: "Settings", url: "/dashboard/job-seeker/settings", icon: Settings },
   ],
-  // Image 2: Recruiter Menu (৪টি আইটেম)
+  // Recruiter Menu
   recruiter: [
     { name: "Dashboard", url: "/dashboard/recruiter", icon: LayoutDashboard },
     { name: "Add Jobs", url: "/dashboard/recruiter/jobs/new", icon: PlusCircle },
@@ -44,7 +44,7 @@ const menuItemByRole: Record<Role, DashboardMenuItem[]> = {
     { name: "Applications", url: "/dashboard/recruiter/applications", icon: FileText },
     { name: "Settings", url: "/dashboard/recruiter/settings", icon: Settings },
   ],
-  // Image 1: Admin Menu (Users, Companies, Payments)
+  // Admin Menu
   admin: [
     { name: "Dashboard", url: "/dashboard/admin", icon: LayoutDashboard },
     { name: "Users", url: "/dashboard/admin/users", icon: Users },
@@ -60,7 +60,7 @@ export function DashBoardSidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // URL ও Session মিলিয়ে নিখুঁত রোল ডিটেকশন
+  // Role detection from URL and session fallback
   const role: Role =
     pathname.includes("recruiter") ? "recruiter" :
     pathname.includes("admin") ? "admin" :
@@ -69,17 +69,17 @@ export function DashBoardSidebar() {
 
   const menuItems = menuItemByRole[role];
 
-  // বর্তমান pathname-এর সাথে সবচেয়ে নিখুঁত ও সর্বোচ্চ মিলে যাওয়া আইটেমটি সিলেক্ট করা
+  // Find best matching active menu item for current pathname
   const activeItem = menuItems
     .filter((item) => pathname === item.url || pathname.startsWith(item.url + "/"))
     .sort((a, b) => b.url.length - a.url.length)[0];
 
   return (
     <Sidebar className="border-r border-zinc-200 bg-white text-zinc-900 select-none">
-      {/* হেডার অংশ */}
+      {/* Sidebar Header */}
       <SidebarHeader className="p-4 bg-white">
         <Logo />
-        {/* Image 1: Admin-এর জন্য লোগোর নিচে 'Admin Console' সাবটাইটেল */}
+        {/* Admin Console subtitle */}
         {role === "admin" && (
           <p className="text-xs text-zinc-500 font-medium -mt-2 px-1">
             Admin Console
@@ -88,7 +88,7 @@ export function DashBoardSidebar() {
       </SidebarHeader>
 
       <SidebarContent className="bg-white px-2">
-        {/* Image 2: Recruiter Top Profile Card (Premium account badge সহ) */}
+        {/* Recruiter Top Profile Card */}
         {role === "recruiter" && (
           <div className="mx-2 mb-4 p-3 rounded-2xl bg-zinc-50 border border-zinc-200/90 flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-zinc-200 text-zinc-700 font-bold text-sm flex items-center justify-center shrink-0">
@@ -108,7 +108,7 @@ export function DashBoardSidebar() {
           </div>
         )}
 
-        {/* Image 3: Seeker Top Profile Card (Seeker Portal + Professional Tier) */}
+        {/* Seeker Top Profile Card */}
         {role === "seeker" && (
           <div className="mx-2 mb-4 p-3 rounded-2xl bg-zinc-50 border border-zinc-200/90 flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-zinc-200 text-zinc-700 font-bold text-sm flex items-center justify-center shrink-0">
@@ -125,7 +125,7 @@ export function DashBoardSidebar() {
           </div>
         )}
 
-        {/* ডাইনামিক মেনু আইটেমসমূহ */}
+        {/* Dynamic Navigation Menu Items */}
         <nav className="flex flex-col gap-1 px-2">
           {menuItems.map((item) => {
             const isActive = activeItem?.url === item.url;
@@ -167,9 +167,9 @@ export function DashBoardSidebar() {
         </nav>
       </SidebarContent>
 
-      {/* ফুটার অংশ */}
+      {/* Sidebar Footer */}
       <SidebarFooter className="p-4 border-t border-zinc-200/80 bg-white flex flex-col gap-3">
-        {/* Image 1: Admin-এর জন্য বটম প্রোফাইল কার্ড */}
+        {/* Admin Bottom Profile Card */}
         {role === "admin" && (
           <div className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200/90 flex items-center gap-3 mb-1">
             <div className="w-9 h-9 rounded-full bg-zinc-200 text-zinc-700 font-bold text-xs flex items-center justify-center shrink-0">
@@ -184,7 +184,7 @@ export function DashBoardSidebar() {
           </div>
         )}
 
-        {/* Image 3: শুধুমাত্র Seeker-এর জন্য 'Post Resume' বাটন */}
+        {/* Seeker Post Resume Button */}
         {role === "seeker" && (
           <Link
             href="/dashboard/job-seeker/resume"
@@ -194,7 +194,7 @@ export function DashBoardSidebar() {
           </Link>
         )}
 
-        {/* Logout বাটন (সবার জন্য) */}
+        {/* Logout Button */}
         <button
           type="button"
           onClick={() =>

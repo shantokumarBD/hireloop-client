@@ -18,9 +18,9 @@ const liveStats = [
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-[#010103] -mt-20 pt-28 sm:pt-32 lg:pt-36 pb-20 text-white">
-      {/* ================= ১. হিরো মেইন কনটেন্ট (Frame 2147234456) ================= */}
+      {/* 1. Hero Main Content */}
       <div className="relative z-10 max-w-[784px] mx-auto px-4 flex flex-col items-center text-center">
-        {/* টপ ব্যাজ */}
+        {/* Top Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0E0F14] border border-white/10 shadow-lg mb-5 sm:mb-6">
           <span className="text-sm">💼</span>
           <span className="text-xs font-semibold text-zinc-300 tracking-wider">
@@ -28,24 +28,24 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* হেডলাইন */}
+        {/* Headline */}
         <h1 className="text-3xl sm:text-4xl lg:text-[50px] font-extrabold text-white tracking-tight leading-[1.1] max-w-2xl">
           Find Your Dream Job Today
         </h1>
 
-        {/* সাব-হেডলাইন */}
+        {/* Subheadline */}
         <p className="mt-4 text-xs sm:text-sm md:text-[15px] text-zinc-400 max-w-xl leading-relaxed">
           HireLoop connects top talent with world-class companies. Browse thousands of
           curated opportunities and land your next role — faster.
         </p>
 
-        {/* সার্চ ফর্ম */}
+        {/* Search Form */}
         <form
           action="/jobs"
           method="GET"
           className="mt-8 sm:mt-10 w-full h-[62px] sm:h-[64px] rounded-full bg-[#0B0C10] border border-white/10 shadow-2xl flex items-center px-2"
         >
-          {/* ইনপুট ১: সার্চ */}
+          {/* Input 1: Search */}
           <div className="flex-1 flex items-center gap-3 pl-4 sm:pl-5 pr-2 min-w-0">
             <Search className="w-5 h-5 text-zinc-400 shrink-0 stroke-[1.5]" />
             <input
@@ -56,10 +56,10 @@ export default function Hero() {
             />
           </div>
 
-          {/* ডিভাইডার */}
+          {/* Divider */}
           <div className="h-6 w-px bg-white/10 shrink-0 mx-1" />
 
-          {/* ইনপুট ২: লোকেশন */}
+          {/* Input 2: Location */}
           <div className="flex-1 flex items-center gap-3 px-3 sm:px-4 min-w-0">
             <svg
               className="w-5 h-5 text-zinc-400 shrink-0"
@@ -85,7 +85,7 @@ export default function Hero() {
             />
           </div>
 
-          {/* সার্চ বাটন */}
+          {/* Search Button */}
           <button
             type="submit"
             className="w-12 h-12 rounded-[14px] bg-[#5C53FE] hover:bg-[#4E44FE] text-white flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(92,83,254,0.5)] cursor-pointer"
@@ -95,7 +95,7 @@ export default function Hero() {
           </button>
         </form>
 
-        {/* ট্রেন্ডিং পজিশনস */}
+        {/* Trending Positions */}
         <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
           <span className="text-xs text-zinc-500 font-medium">Trending Position</span>
           {trendingPositions.map((tag) => (
@@ -110,9 +110,9 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ================= ২. গ্লোব ও লাইভ স্ট্যাটস সেকশন (Figma হুবহু কম্প্যাক্ট লেআউট) ================= */}
+      {/* 2. Globe & Live Stats Section */}
       <div className="relative w-full max-w-[1200px] mx-auto px-4 mt-6 sm:mt-10">
-        {/* গ্লোব ব্যাকগ্রাউন্ড - ক্লিপড ও এবসোলিউট যাতে কোনো অতিরিক্ত গ্যাপ তৈরি না করে */}
+        {/* Globe Background */}
         <div className="absolute inset-x-0 top-0 flex justify-center pointer-events-none select-none z-0 overflow-hidden h-[620px] sm:h-[700px]">
           <div className="w-[1050px] sm:w-[1180px] shrink-0">
             <Image
@@ -126,14 +126,14 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* গ্লোবের ওপরের টেক্সট (ফিগমার মতো ঠিক গ্লোবের ওপর বসবে) */}
+        {/* Globe Overlay Text */}
         <div className="relative z-10 pt-36 sm:pt-48 md:pt-56 pb-8 sm:pb-10 text-center">
           <p className="max-w-[620px] mx-auto text-2xl sm:text-3xl md:text-[36px] font-medium leading-[130%] tracking-[-0.5px] text-white/90">
             Assisting over 15,000 job seekers find their dream positions.
           </p>
         </div>
 
-        {/* ৪টি লাইভ স্ট্যাটস কার্ড (গ্লোবের নিচের অংশে ফিগমার মতো আঁটসাঁট হয়ে বসবে) */}
+        {/* 4 Live Stats Cards */}
         <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {liveStats.map((stat, idx) => {
             const Icon = stat.icon;
