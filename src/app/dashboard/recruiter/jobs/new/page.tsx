@@ -14,8 +14,9 @@ import {
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { createJob } from "@/lib/api/jobs";
+
 import { CreateJobInput } from "@/Types";
+import { createJobs } from "@/lib/actions/jobs";
 
 // Job type options
 const JOB_TYPES = ["Full-Time", "Part-Time", "Contract", "Internship"] as const;
@@ -63,30 +64,20 @@ export default function PostNewJobPage() {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    // Build payload directly with formData.get()
-    const jobData: CreateJobInput = {
-      title: (formData.get("title") as string)?.trim(),
-      companyName: (formData.get("companyName") as string)?.trim(),
-      category: (formData.get("category") as string) || category,
-      jobType: (formData.get("jobType") as string) || jobType,
-      isRemote: formData.get("isRemote") === "true",
-      location: (formData.get("location") as string)?.trim(),
-      deadline: (formData.get("deadline") as string) || "",
-      salaryMin: Number(formData.get("salaryMin")) || 0,
-      salaryMax: Number(formData.get("salaryMax")) || 0,
-      salaryFrequency: (formData.get("salaryFrequency") as string) || frequency,
-      responsibilities: (formData.get("responsibilities") as string)?.trim(),
-      requirements: (formData.get("requirements") as string)?.trim(),
-      status: "Active",
-      createdAt: new Date().toISOString(),
-    };
+ 
+
+    console.log("[Client] Submitting form...");
 
     try {
-      console.log("Submitting New Job Payload:", jobData);
+      const res = await createJobs(formData);
+      console.log("[Client] Response from Server Action:", res);
 
-      // Call API createJob service
-      await createJob(jobData);
-
+      if (!res.success) {
+        console.error("[Client] Failed to post job:", res.error);
+        setErrorMsg(res.error || "Failed to post job");
+        return;
+      }
+      console.log("[Client] Job created successfully!");
       setSuccessMsg("Job listing published successfully!");
       form.reset();
 
@@ -123,7 +114,6 @@ export default function PostNewJobPage() {
           </div>
 
           {/* Top Publish Button */}
-
         </div>
       </div>
 
@@ -467,7 +457,9 @@ export default function PostNewJobPage() {
                 name="requirements"
                 rows={4}
                 disabled={isLoading}
-                placeholder={"• 3+ years of experience with...\n• Solid understanding of..."}
+                placeholder={
+                  "• 3+ years of experience with...\n• Solid understanding of..."
+                }
                 className="w-full p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#5C53FE] focus:bg-white transition-colors resize-y disabled:opacity-50 leading-relaxed font-mono text-xs sm:text-sm"
               />
             </div>
