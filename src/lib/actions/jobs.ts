@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export const createJobs = async (formData: FormData) => {
-  
   const jobPayload = {
     title: (formData.get("title") as string)?.trim(),
     companyName: (formData.get("companyName") as string)?.trim(),
@@ -38,7 +37,11 @@ export const createJobs = async (formData: FormData) => {
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => null);
-      console.error("[Server Action] Backend response not OK:", res.status, errorData);
+      console.error(
+        "[Server Action] Backend response not OK:",
+        res.status,
+        errorData,
+      );
       return {
         success: false,
         error: errorData?.message || `Server error: ${res.status}`,
@@ -61,3 +64,19 @@ export const createJobs = async (formData: FormData) => {
   }
 };
 
+export const deleteJobs = async (jobId: string) => {
+  try {
+    const res = await fetch(`${BASE_URL}/jobs/${jobId}`, {
+      method: "DELETE",
+    });
+    revalidatePath("/dashboard/recruiter/jobs");
+    return res.json();
+  } catch (error) {
+    console.error("[Server Action] Network / Runtime Error:", error);
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Failed to connect to server",
+    };
+  }
+};
