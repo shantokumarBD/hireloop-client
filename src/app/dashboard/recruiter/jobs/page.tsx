@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { getJobs } from "@/lib/api/jobs";
+import DeleteJobDialog from "@/app/components/DeleteJobDialog";
 
 
 export default async function ManageJobsPage() {
@@ -185,13 +186,10 @@ export default async function ManageJobsPage() {
                         <span>Update</span>
                       </button>
 
-                      <button
-                        type="button"
-                        title="Delete job"
-                        className="p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded-lg border border-zinc-200 hover:border-red-200 transition-colors cursor-pointer"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      <DeleteJobDialog
+                        jobTitle={job.title}
+                        jobId={job._id}
+                      />
 
                       <button
                         type="button"
