@@ -1,5 +1,6 @@
 "use server";
 
+import { success } from "better-auth";
 import { revalidatePath } from "next/cache";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -78,5 +79,29 @@ export const deleteJobs = async (jobId: string) => {
       error:
         error instanceof Error ? error.message : "Failed to connect to server",
     };
+  }
+};
+
+export const getSingleJob = async (jobId: string) => {
+  const res = await fetch(`${BASE_URL}/jobs/${jobId}`, {
+    cache: "no-store",
+  });
+  return res.json();
+};
+
+export const updateJob = async (jobId: string, updateData: any) => {
+  try {
+    const res = await fetch(`${BASE_URL}/jobs/${jobId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updateData),
+    });
+    revalidatePath("/dashboard/recruiter/jobs");
+    return res.json();
+  } catch (error) {
+    console.log(error);
+    return { success: false };
   }
 };

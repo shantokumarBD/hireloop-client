@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { getJobs } from "@/lib/api/jobs";
 import DeleteJobDialog from "@/app/components/DeleteJobDialog";
+import UpdateJobDialog from "@/app/components/UpdateJobDialog";
 
 
 export default async function ManageJobsPage() {
@@ -178,13 +179,7 @@ export default async function ManageJobsPage() {
                   {/* 8. Actions */}
                   <TableCell className="py-4 px-4 text-right">
                     <div className="flex items-center justify-end gap-1.5">
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-[#5C53FE] hover:bg-[#4E45E8] rounded-lg transition-all shadow-sm cursor-pointer"
-                      >
-                        <Pencil className="w-3 h-3" />
-                        <span>Update</span>
-                      </button>
+                      <UpdateJobDialog job={job} />
 
                       <DeleteJobDialog
                         jobTitle={job.title}
