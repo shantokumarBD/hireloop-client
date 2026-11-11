@@ -16,6 +16,11 @@ import { Input } from "@/components/ui/input";
 import { updateJob } from "@/lib/actions/jobs";
 import { CreateJobInput } from "@/Types";
 import { toast } from "@/components/ui/toast";
+import {
+  JOB_TYPES,
+  CATEGORIES,
+  SALARY_FREQUENCIES,
+} from "@/constants/jobs";
 
 interface UpdateJobDialogProps {
   job: CreateJobInput;
@@ -98,7 +103,17 @@ export default function UpdateJobDialog({ job }: UpdateJobDialogProps) {
               <label className="text-xs font-medium text-zinc-700 block mb-1">
                 Category
               </label>
-              <Input name="category" defaultValue={job.category} required />
+              <select
+                name="category"
+                defaultValue={job.category}
+                className="w-full h-8 rounded-lg border border-zinc-200 bg-white px-2.5 text-sm text-zinc-800 outline-none focus:border-[#5C53FE]"
+              >
+                {CATEGORIES.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="text-xs font-medium text-zinc-700 block mb-1">
@@ -109,10 +124,11 @@ export default function UpdateJobDialog({ job }: UpdateJobDialogProps) {
                 defaultValue={job.jobType || "Full-Time"}
                 className="w-full h-8 rounded-lg border border-zinc-200 bg-white px-2.5 text-sm text-zinc-800 outline-none focus:border-[#5C53FE]"
               >
-                <option value="Full-Time">Full-Time</option>
-                <option value="Part-Time">Part-Time</option>
-                <option value="Contract">Contract</option>
-                <option value="Internship">Internship</option>
+                {JOB_TYPES.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -172,9 +188,11 @@ export default function UpdateJobDialog({ job }: UpdateJobDialogProps) {
                 defaultValue={job.salaryFrequency || "per hour"}
                 className="w-full h-8 rounded-lg border border-zinc-200 bg-white px-2 text-sm text-zinc-800 outline-none focus:border-[#5C53FE]"
               >
-                <option value="per hour">per hour</option>
-                <option value="per month">per month</option>
-                <option value="per year">per year</option>
+                {SALARY_FREQUENCIES.map((freq) => (
+                  <option key={freq.value} value={freq.value}>
+                    {freq.label}
+                  </option>
+                ))}
               </select>
             </div>
           </div>

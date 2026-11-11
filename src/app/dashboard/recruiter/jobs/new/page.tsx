@@ -17,28 +17,12 @@ import { Button } from "@/components/ui/button";
 
 import { CreateJobInput } from "@/Types";
 import { createJobs } from "@/lib/actions/jobs";
-
-// Job type options
-const JOB_TYPES = ["Full-Time", "Part-Time", "Contract", "Internship"] as const;
-
-// Category options
-const CATEGORIES = [
-  "Engineering & Technology",
-  "Design & Creative",
-  "Product Management",
-  "Marketing & Communications",
-  "Sales & Business Development",
-  "Finance & Operations",
-  "Customer Support",
-  "Human Resources",
-] as const;
-
-// Salary frequency options
-const SALARY_FREQUENCIES = [
-  { label: "per hour", value: "per hour" },
-  { label: "per month", value: "per month" },
-  { label: "per year", value: "per year" },
-] as const;
+import { toast } from "@/components/ui/toast";
+import {
+  JOB_TYPES,
+  CATEGORIES,
+  SALARY_FREQUENCIES,
+} from "@/constants/jobs";
 
 export default function PostNewJobPage() {
   const router = useRouter();
@@ -78,12 +62,17 @@ export default function PostNewJobPage() {
         return;
       }
       console.log("[Client] Job created successfully!");
+      toast.add({
+        title: "Job Published",
+        description: "Job listing has been published successfully!",
+      });
       setSuccessMsg("Job listing published successfully!");
       form.reset();
 
       setTimeout(() => {
         router.push("/dashboard/recruiter/jobs");
-      }, 1200);
+        router.refresh();
+      }, 1000);
     } catch (err: unknown) {
       const message =
         err instanceof Error

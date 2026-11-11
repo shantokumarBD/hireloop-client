@@ -22,6 +22,9 @@ import { Button } from "@/components/ui/button";
 import { getJobs } from "@/lib/api/jobs";
 import DeleteJobDialog from "@/app/components/DeleteJobDialog";
 import UpdateJobDialog from "@/app/components/UpdateJobDialog";
+import { DashboardHeader } from "@/app/components/shared/DashboardHeader";
+import { StatusBadge } from "@/app/components/shared/StatusBadge";
+import { JobTypeBadge } from "@/app/components/shared/JobTypeBadge";
 
 
 export default async function ManageJobsPage() {
@@ -29,34 +32,23 @@ export default async function ManageJobsPage() {
 
   return (
     <div className="max-w-[1400px] mx-auto space-y-6">
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-        <span className="hover:text-zinc-600 transition-colors cursor-pointer">
-          Manage Jobs
-        </span>
-        <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />
-        <span className="text-zinc-700 font-medium">Job Listings & Postings</span>
-      </div>
-
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">
-            Manage Job Posts
-          </h1>
-          <p className="text-xs sm:text-sm text-zinc-500 mt-1 max-w-2xl leading-relaxed">
-            Review live listings, monitor applicants, and update job details across your organization.
-          </p>
-        </div>
-
-        {/* New Job Post Button */}
-        <Link href="/dashboard/recruiter/jobs/new">
-          <Button className="w-full sm:w-auto bg-[#5C53FE] hover:bg-[#4E45E8] text-white font-medium text-xs sm:text-sm px-4 py-2 rounded-xl flex items-center gap-2 shadow-lg shadow-[#5C53FE]/20 transition-all cursor-pointer">
-            <Plus className="w-4 h-4" />
-            <span>New Job Post</span>
-          </Button>
-        </Link>
-      </div>
+      {/* Page Header with Breadcrumbs */}
+      <DashboardHeader
+        breadcrumbs={[
+          { label: "Manage Jobs" },
+          { label: "Job Listings & Postings" },
+        ]}
+        title="Manage Job Posts"
+        subtitle="Review live listings, monitor applicants, and update job details across your organization."
+        action={
+          <Link href="/dashboard/recruiter/jobs/new">
+            <Button className="w-full sm:w-auto bg-[#5C53FE] hover:bg-[#4E45E8] text-white font-medium text-xs sm:text-sm px-4 py-2 rounded-xl flex items-center gap-2 shadow-lg shadow-[#5C53FE]/20 transition-all cursor-pointer">
+              <Plus className="w-4 h-4" />
+              <span>New Job Post</span>
+            </Button>
+          </Link>
+        }
+      />
 
       {/* Responsive Table Card */}
       <div className="rounded-2xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
@@ -133,9 +125,7 @@ export default async function ManageJobsPage() {
 
                   {/* 3. Job Type Pill */}
                   <TableCell className="py-4 px-4">
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-zinc-100 text-zinc-600 border border-zinc-200">
-                      {job.jobType}
-                    </span>
+                    <JobTypeBadge type={job.jobType} />
                   </TableCell>
 
                   {/* 4. Compensation */}
@@ -153,22 +143,7 @@ export default async function ManageJobsPage() {
 
                   {/* 6. Status Pill */}
                   <TableCell className="py-4 px-4">
-                    <span
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${
-                        job.status === "Active"
-                          ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                          : "bg-zinc-100 text-zinc-500 border-zinc-200"
-                      }`}
-                    >
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full ${
-                          job.status === "Active"
-                            ? "bg-emerald-500 animate-pulse"
-                            : "bg-zinc-400"
-                        }`}
-                      />
-                      {job.status}
-                    </span>
+                    <StatusBadge status={job.status} />
                   </TableCell>
 
                   {/* 7. Deadline */}
