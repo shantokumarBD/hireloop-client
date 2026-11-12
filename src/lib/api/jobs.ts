@@ -3,9 +3,9 @@ import { CreateJobInput } from "@/Types";
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 
-export const  getJobs = async ():Promise<CreateJobInput[]>=>{
+export const  getJobs = async (query=""):Promise<CreateJobInput[]>=>{
     try {
-        const res = await fetch(`${BASE_URL}/jobs`, {cache:"no-store"})
+        const res = await fetch(`${BASE_URL}/jobs?${query}`, {cache:"no-store"})
         if(!res.ok){
             return[]
         }
