@@ -67,6 +67,7 @@ export function DashBoardSidebar() {
     pathname.includes("job-seeker") ? "seeker" :
     (session?.user?.role as Role) || "seeker";
 
+  const isDark = role === "seeker";
   const menuItems = menuItemByRole[role];
 
   // Find best matching active menu item for current pathname
@@ -75,9 +76,15 @@ export function DashBoardSidebar() {
     .sort((a, b) => b.url.length - a.url.length)[0];
 
   return (
-    <Sidebar className="border-r border-zinc-200 bg-white text-zinc-900 select-none">
+    <Sidebar
+      className={
+        isDark
+          ? "border-r border-zinc-800/80 bg-[#0B0E14] text-zinc-100 select-none"
+          : "border-r border-zinc-200 bg-white text-zinc-900 select-none"
+      }
+    >
       {/* Sidebar Header */}
-      <SidebarHeader className="p-4 bg-white">
+      <SidebarHeader className={isDark ? "p-4 bg-[#0B0E14]" : "p-4 bg-white"}>
         <Logo />
         {/* Admin Console subtitle */}
         {role === "admin" && (
@@ -87,7 +94,7 @@ export function DashBoardSidebar() {
         )}
       </SidebarHeader>
 
-      <SidebarContent className="bg-white px-2">
+      <SidebarContent className={isDark ? "bg-[#0B0E14] px-2" : "bg-white px-2"}>
         {/* Recruiter Top Profile Card */}
         {role === "recruiter" && (
           <div className="mx-2 mb-4 p-3 rounded-2xl bg-zinc-50 border border-zinc-200/90 flex items-center gap-3">
@@ -110,15 +117,23 @@ export function DashBoardSidebar() {
 
         {/* Seeker Top Profile Card */}
         {role === "seeker" && (
-          <div className="mx-2 mb-4 p-3 rounded-2xl bg-zinc-50 border border-zinc-200/90 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-zinc-200 text-zinc-700 font-bold text-sm flex items-center justify-center shrink-0">
-              {session?.user?.name?.charAt(0).toUpperCase() || "S"}
+          <div className="mx-2 mb-4 p-3 rounded-2xl bg-[#121624] border border-zinc-800/80 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-zinc-800 text-zinc-200 font-bold text-sm flex items-center justify-center shrink-0 border border-zinc-700/60 overflow-hidden">
+              {session?.user?.image ? (
+                <img
+                  src={session.user.image}
+                  alt={session.user.name || "User"}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                session?.user?.name?.charAt(0).toUpperCase() || "S"
+              )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-zinc-900 truncate leading-tight">
+              <p className="text-sm font-semibold text-white truncate leading-tight">
                 Seeker Portal
               </p>
-              <p className="text-xs text-zinc-500 font-medium truncate mt-0.5">
+              <p className="text-xs text-zinc-400 font-medium truncate mt-0.5">
                 Professional Tier
               </p>
             </div>
@@ -136,7 +151,11 @@ export function DashBoardSidebar() {
                 href={item.url}
                 className={`group relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-zinc-100 text-zinc-950 font-semibold"
+                    ? isDark
+                      ? "bg-[#161C2C] text-white font-semibold"
+                      : "bg-zinc-100 text-zinc-950 font-semibold"
+                    : isDark
+                    ? "text-zinc-400 hover:bg-[#161C2C]/50 hover:text-white"
                     : "text-zinc-600 hover:bg-zinc-100/90 hover:text-zinc-950"
                 }`}
               >
@@ -147,7 +166,11 @@ export function DashBoardSidebar() {
                 <item.icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
                     isActive
-                      ? "text-zinc-950"
+                      ? isDark
+                        ? "text-white"
+                        : "text-zinc-950"
+                      : isDark
+                      ? "text-zinc-400 group-hover:text-white"
                       : "text-zinc-500 group-hover:text-zinc-950"
                   }`}
                 />
@@ -155,7 +178,11 @@ export function DashBoardSidebar() {
                 <span
                   className={`truncate transition-colors ${
                     isActive
-                      ? "text-zinc-950 font-semibold"
+                      ? isDark
+                        ? "text-white font-semibold"
+                        : "text-zinc-950 font-semibold"
+                      : isDark
+                      ? "text-zinc-400 group-hover:text-white"
                       : "text-zinc-700 group-hover:text-zinc-950"
                   }`}
                 >
@@ -168,7 +195,13 @@ export function DashBoardSidebar() {
       </SidebarContent>
 
       {/* Sidebar Footer */}
-      <SidebarFooter className="p-4 border-t border-zinc-200/80 bg-white flex flex-col gap-3">
+      <SidebarFooter
+        className={
+          isDark
+            ? "p-4 border-t border-zinc-800/80 bg-[#0B0E14] flex flex-col gap-3"
+            : "p-4 border-t border-zinc-200/80 bg-white flex flex-col gap-3"
+        }
+      >
         {/* Admin Bottom Profile Card */}
         {role === "admin" && (
           <div className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200/90 flex items-center gap-3 mb-1">
@@ -188,7 +221,7 @@ export function DashBoardSidebar() {
         {role === "seeker" && (
           <Link
             href="/dashboard/job-seeker/resume"
-            className="w-full h-11 rounded-xl bg-zinc-900 hover:bg-zinc-800 active:bg-black text-white text-sm font-semibold flex items-center justify-center transition-all shadow-sm cursor-pointer"
+            className="w-full h-11 rounded-xl bg-white hover:bg-zinc-100 active:bg-zinc-200 text-zinc-950 text-sm font-semibold flex items-center justify-center transition-all shadow-sm cursor-pointer"
           >
             Post Resume
           </Link>
@@ -207,10 +240,26 @@ export function DashBoardSidebar() {
               },
             })
           }
-          className="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-sm font-medium text-zinc-600 hover:text-red-600 hover:bg-red-50/80 transition-colors cursor-pointer group"
+          className={`w-full flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-sm font-medium transition-colors cursor-pointer group ${
+            isDark
+              ? "text-zinc-400 hover:text-red-400 hover:bg-zinc-800/40"
+              : "text-zinc-600 hover:text-red-600 hover:bg-red-50/80"
+          }`}
         >
-          <LogOut className="w-4 h-4 shrink-0 text-zinc-500 group-hover:text-red-600 transition-colors" />
-          <span className="text-zinc-600 group-hover:text-red-600 transition-colors">
+          <LogOut
+            className={`w-4 h-4 shrink-0 transition-colors ${
+              isDark
+                ? "text-zinc-400 group-hover:text-red-400"
+                : "text-zinc-500 group-hover:text-red-600"
+            }`}
+          />
+          <span
+            className={`transition-colors ${
+              isDark
+                ? "text-zinc-400 group-hover:text-red-400"
+                : "text-zinc-600 group-hover:text-red-600"
+            }`}
+          >
             Logout
           </span>
         </button>

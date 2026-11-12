@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Mail, Lock, ArrowRight, Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
 import Logo from "@/components/shared/Logo";
-import { authClient } from "@/lib/auth-client";
+import { authClient, signIn } from "@/lib/auth-client";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -13,6 +13,10 @@ export default function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get("callbackUrl") || "/"
+
 
   // Form submit handler (try-finally pattern)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,9 +29,10 @@ export default function SignInForm() {
     const password = formData.get("password") as string;
 
     try {
-      const { data, error } = await authClient.signIn.email({
+      const { data, error } = await signIn.email({
         email,
         password,
+        callbackURL: callbackUrl,
       });
 
       if (error) {
@@ -51,9 +56,9 @@ export default function SignInForm() {
     setIsGoogleLoading(true);
 
     try {
-      await authClient.signIn.social({
+      await signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: '/',
       });
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Failed to sign in with Google.";

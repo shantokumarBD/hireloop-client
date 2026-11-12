@@ -105,3 +105,19 @@ export const updateJob = async (jobId: string, updateData: any) => {
     return { success: false };
   }
 };
+
+export const applyToJob = async (data: any) => {
+  try {
+    const res = await fetch(`${BASE_URL}/applications`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    return await res.json();
+  } catch (error) {
+    console.error("Error applying to job:", error);
+    return { success: false, error: "Failed to submit application" };
+  }
+};
