@@ -100,6 +100,8 @@ export interface Application {
   seekerEmail: string;
   seekerName: string;
   resumeUrl?: string;
+  description?: string;
+  notes?: string;
   status: ApplicationStatus | string;
   appliedAt: string | Date;
 }

@@ -8,6 +8,7 @@ import { useSession } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
 import { CreateJobInput, CreateApplicationInput } from "@/Types";
 import { applyToJob } from "@/lib/actions/jobs";
+import { getApplicationCount } from "@/lib/api/applications";
 
 interface JobDetailsActionsProps {
   job: CreateJobInput;
@@ -42,6 +43,20 @@ export function JobDetailsActions({ job }: JobDetailsActionsProps) {
     // 3. User is a logged-in seeker, submit application
     setIsSubmitting(true);
     try {
+      // Check application limit on client before submitting
+      const countRes = await getApplicationCount(session.user.id, session.user.email);
+      if (countRes.limitReached || countRes.count >= 10) {
+        toast.add({
+          title: "Application Limit Reached (10/10)",
+          description: "You have used all 10 free applications. Redirecting to payment page...",
+          type: "error",
+        });
+        setTimeout(() => {
+          router.push("/payment");
+        }, 1200);
+        return;
+      }
+
       const application: CreateApplicationInput = {
         jobId: job._id,
         userId: session.user.id,
@@ -63,24 +78,51 @@ export function JobDetailsActions({ job }: JobDetailsActionsProps) {
 
       const res = await applyToJob(application);
 
+      // Check if server rejected due to 10 application limit
+      if (res?.limitReached || res?.error === "APPLICATION_LIMIT_REACHED") {
+        toast.add({
+          title: "Application Limit Reached (10/10)",
+          description: "You have used all 10 free applications. Redirecting to payment page...",
+          type: "error",
+        });
+        setTimeout(() => {
+          router.push("/payment");
+        }, 1200);
+        return;
+      }
+
+      // Check if user already applied to this specific job
+      if (res?.alreadyApplied || res?.error === "ALREADY_APPLIED") {
+        toast.add({
+          title: "Already Applied",
+          description: "You have already applied for this job.",
+          type: "warning",
+        });
+        setHasApplied(true);
+        return;
+      }
+
       if (res?.insertedId) {
         setHasApplied(true);
         toast.add({
           title: "Application Submitted",
           description: "Your application has been submitted successfully!",
+          type: "success",
         });
         router.refresh();
-        router.push("/browser-jobs");
+        router.push("/dashboard/job-seeker/applications");
       } else {
         toast.add({
           title: "Application Failed",
-          description: res?.error || "Could not submit application. Please try again.",
+          description: res?.message || res?.error || "Could not submit application. Please try again.",
+          type: "error",
         });
       }
     } catch (err) {
       toast.add({
         title: "Error",
         description: "An unexpected error occurred while applying.",
+        type: "error",
       });
     } finally {
       setIsSubmitting(false);
