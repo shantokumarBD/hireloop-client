@@ -6,17 +6,11 @@ import {
   Sparkles,
   ArrowRight,
   ShieldCheck,
-  AlertCircle,
   ArrowLeft,
 } from "lucide-react";
+import PaymentCanceledAlert from "./PaymentCanceledAlert";
 
-interface PaymentPageProps {
-  searchParams: Promise<{ canceled?: string }>;
-}
-
-export default async function PaymentPage({ searchParams }: PaymentPageProps) {
-  const { canceled } = await searchParams;
-
+export default function PaymentPage() {
   return (
     <div className="min-h-screen bg-[#07090e] text-zinc-100 flex flex-col justify-between p-4 sm:p-6 lg:p-10 font-sans selection:bg-[#0070F3]/30">
       {/* Top Header Navigation */}
@@ -36,18 +30,8 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
 
       {/* Main Checkout Card */}
       <div className="w-full max-w-xl mx-auto my-auto py-6">
-        {/* Order Canceled Alert Banner */}
-        {canceled && (
-          <div className="mb-6 p-4 rounded-2xl bg-amber-950/30 border border-amber-500/40 flex items-start gap-3 text-amber-200 text-xs sm:text-sm">
-            <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-            <div className="space-y-0.5">
-              <p className="font-semibold text-amber-300">Checkout Canceled</p>
-              <p className="text-zinc-400">
-                Your payment was not completed. You can review your plan and check out whenever you are ready.
-              </p>
-            </div>
-          </div>
-        )}
+        {/* Order Canceled Alert Banner (Client Component wrapped in Suspense) */}
+        <PaymentCanceledAlert />
 
         <div className="rounded-3xl bg-[#0f1118] border border-zinc-800/80 p-6 sm:p-8 shadow-2xl space-y-6">
           {/* Card Header */}

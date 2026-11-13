@@ -36,9 +36,10 @@ export const getApplications = async (
 
 export interface ApplicationCountResponse {
   count: number;
-  limit: number;
+  limit: number | string;
   limitReached: boolean;
   remaining: number;
+  isPremium?: boolean;
 }
 
 export const getApplicationCount = async (

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import SignInForm from "@/components/forms/SignInForm";
 
 export const metadata: Metadata = {
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 export default function SignInPage() {
   return (
     <main className="min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 py-12">
-      <SignInForm />
+      <Suspense fallback={null}>
+        <SignInForm />
+      </Suspense>
     </main>
   );
 }

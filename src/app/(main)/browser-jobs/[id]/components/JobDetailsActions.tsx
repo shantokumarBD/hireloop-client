@@ -9,6 +9,7 @@ import { toast } from "@/components/ui/toast";
 import { CreateJobInput, CreateApplicationInput } from "@/Types";
 import { applyToJob } from "@/lib/actions/jobs";
 import { getApplicationCount } from "@/lib/api/applications";
+import { getUserPrmiumById } from "@/lib/api/user";
 
 interface JobDetailsActionsProps {
   job: CreateJobInput;
@@ -40,21 +41,33 @@ export function JobDetailsActions({ job }: JobDetailsActionsProps) {
       return;
     }
 
+    let isPremium = false;
+    if (userRole === "seeker") {
+      const premiumResult = await getUserPrmiumById(session.user.id, session.user.email);
+      console.log("Premium Result", premiumResult);
+      isPremium = Boolean(premiumResult?.premium);
+    }
+
     // 3. User is a logged-in seeker, submit application
     setIsSubmitting(true);
     try {
-      // Check application limit on client before submitting
-      const countRes = await getApplicationCount(session.user.id, session.user.email);
-      if (countRes.limitReached || countRes.count >= 10) {
-        toast.add({
-          title: "Application Limit Reached (10/10)",
-          description: "You have used all 10 free applications. Redirecting to payment page...",
-          type: "error",
-        });
-        setTimeout(() => {
-          router.push("/payment");
-        }, 1200);
-        return;
+      // Check application limit on client before submitting (only for non-premium accounts)
+      if (!isPremium) {
+        const countRes = await getApplicationCount(session.user.id, session.user.email);
+        if (countRes?.isPremium) {
+          isPremium = true;
+        }
+        if (!isPremium && (countRes.limitReached || countRes.count >= 3)) {
+          toast.add({
+            title: "Application Limit Reached (3/3)",
+            description: "You have used all 3 free applications. Redirecting to payment page...",
+            type: "error",
+          });
+          setTimeout(() => {
+            router.push("/payment");
+          }, 1200);
+          return;
+        }
       }
 
       const application: CreateApplicationInput = {
@@ -78,11 +91,11 @@ export function JobDetailsActions({ job }: JobDetailsActionsProps) {
 
       const res = await applyToJob(application);
 
-      // Check if server rejected due to 10 application limit
+      // Check if server rejected due to 3 application limit
       if (res?.limitReached || res?.error === "APPLICATION_LIMIT_REACHED") {
         toast.add({
-          title: "Application Limit Reached (10/10)",
-          description: "You have used all 10 free applications. Redirecting to payment page...",
+          title: "Application Limit Reached (3/3)",
+          description: "You have used all 3 free applications. Redirecting to payment page...",
           type: "error",
         });
         setTimeout(() => {
