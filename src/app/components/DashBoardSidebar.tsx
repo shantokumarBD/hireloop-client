@@ -41,7 +41,6 @@ const menuItemByRole: Record<Role, DashboardMenuItem[]> = {
     { name: "Dashboard", url: "/dashboard/recruiter", icon: LayoutDashboard },
     { name: "Add Jobs", url: "/dashboard/recruiter/jobs/new", icon: PlusCircle },
     { name: "Manage Jobs", url: "/dashboard/recruiter/jobs", icon: Briefcase },
-    { name: "Applications", url: "/dashboard/recruiter/applications", icon: FileText },
     { name: "Settings", url: "/dashboard/recruiter/settings", icon: Settings },
   ],
   // Admin Menu

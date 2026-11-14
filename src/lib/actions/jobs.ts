@@ -8,6 +8,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 export const createJobs = async (formData: FormData) => {
   const jobPayload = {
     title: (formData.get("title") as string)?.trim(),
+    recruiterId: (formData.get("recruiterId") as string) || "",
     companyName: (formData.get("companyName") as string)?.trim(),
     category: (formData.get("category") as string) || "",
     jobType: (formData.get("jobType") as string) || "Full-Time",

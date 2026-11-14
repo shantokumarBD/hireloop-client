@@ -18,13 +18,14 @@ import { Button } from "@/components/ui/button";
 import { CreateJobInput } from "@/Types";
 import { createJobs } from "@/lib/actions/jobs";
 import { toast } from "@/components/ui/toast";
-import {
-  JOB_TYPES,
-  CATEGORIES,
-  SALARY_FREQUENCIES,
-} from "@/constants/jobs";
+import { JOB_TYPES, CATEGORIES, SALARY_FREQUENCIES } from "@/constants/jobs";
+import { useSession } from "@/lib/auth-client";
 
 export default function PostNewJobPage() {
+  const { data: session } = useSession();
+
+  const recruiterId = session?.user?.id;
+
   const router = useRouter();
 
   // Interactive form states
@@ -48,7 +49,9 @@ export default function PostNewJobPage() {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
- 
+    if (recruiterId) {
+      formData.append("recruiterId", recruiterId);
+    }
 
     console.log("[Client] Submitting form...");
 

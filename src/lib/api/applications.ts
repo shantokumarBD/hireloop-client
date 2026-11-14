@@ -4,7 +4,8 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export const getApplications = async (
   userId?: string,
-  email?: string
+  email?: string,
+  jobId?: string
 ): Promise<Application[]> => {
   try {
     const params = new URLSearchParams();
@@ -13,6 +14,9 @@ export const getApplications = async (
     }
     if (email && email !== "undefined" && email !== "null") {
       params.append("email", email);
+    }
+    if (jobId && jobId !== "undefined" && jobId !== "null") {
+      params.append("jobId", jobId);
     }
 
     const queryString = params.toString();
@@ -32,6 +36,10 @@ export const getApplications = async (
     console.error("[Applications API] Fetch Exception:", error);
     return [];
   }
+};
+
+export const getJobApplications = async (jobId: string): Promise<Application[]> => {
+  return getApplications(undefined, undefined, jobId);
 };
 
 export interface ApplicationCountResponse {

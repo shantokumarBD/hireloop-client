@@ -28,6 +28,7 @@ export interface DashboardMenuItem {
 export interface Job {
   _id: string;
   title: string;
+  recruiterId?: string;
   companyName: string;
   companyLogo?: string;
   category: string;
@@ -44,6 +45,7 @@ export interface Job {
 export interface CreateJobInput {
   _id: string;
   title: string;
+  recruiterId?: string;
   companyName: string;
   category: string;
   jobType: string;

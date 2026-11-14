@@ -25,10 +25,14 @@ import UpdateJobDialog from "@/app/components/UpdateJobDialog";
 import { DashboardHeader } from "@/app/components/shared/DashboardHeader";
 import { StatusBadge } from "@/app/components/shared/StatusBadge";
 import { JobTypeBadge } from "@/app/components/shared/JobTypeBadge";
+import { getSession } from "@/lib/core/server";
 
 
 export default async function ManageJobsPage() {
-  const jobs = await getJobs();
+
+  const session = await getSession()
+
+  const jobs = await getJobs(`recruiterId=${session?.user?.id}`);
 
   return (
     <div className="max-w-[1400px] mx-auto space-y-6">
@@ -135,10 +139,14 @@ export default async function ManageJobsPage() {
 
                   {/* 5. Applicants */}
                   <TableCell className="py-4 px-4">
-                    <div className="flex items-center gap-2 text-xs font-medium text-zinc-600">
-                      <Users className="w-4 h-4 text-zinc-400" />
+                    <Link
+                      href={`/dashboard/recruiter/jobs/${job._id}/applications`}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium text-zinc-700 bg-zinc-100 hover:bg-[#5C53FE]/10 hover:text-[#5C53FE] border border-zinc-200/70 hover:border-[#5C53FE]/30 transition-all cursor-pointer group/link"
+                      title="View all applications for this job"
+                    >
+                      <Users className="w-3.5 h-3.5 text-zinc-500 group-hover/link:text-[#5C53FE] transition-colors" />
                       <span>{job.applicantsCount || 0} Candidates</span>
-                    </div>
+                    </Link>
                   </TableCell>
 
                   {/* 6. Status Pill */}
@@ -154,6 +162,15 @@ export default async function ManageJobsPage() {
                   {/* 8. Actions */}
                   <TableCell className="py-4 px-4 text-right">
                     <div className="flex items-center justify-end gap-1.5">
+                      <Link
+                        href={`/dashboard/recruiter/jobs/${job._id}/applications`}
+                        title="View Applications"
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-[#5C53FE] bg-[#5C53FE]/10 hover:bg-[#5C53FE]/20 rounded-lg border border-[#5C53FE]/20 transition-all cursor-pointer"
+                      >
+                        <Users className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Applications</span>
+                      </Link>
+
                       <UpdateJobDialog job={job} />
 
                       <DeleteJobDialog
