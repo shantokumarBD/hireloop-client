@@ -66,7 +66,7 @@ export function DashBoardSidebar() {
     pathname.includes("job-seeker") ? "seeker" :
     (session?.user?.role as Role) || "seeker";
 
-  const isDark = role === "seeker";
+  const isDark = role === "seeker" || role === "admin";
   const menuItems = menuItemByRole[role];
 
   // Find best matching active menu item for current pathname
@@ -203,15 +203,23 @@ export function DashBoardSidebar() {
       >
         {/* Admin Bottom Profile Card */}
         {role === "admin" && (
-          <div className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200/90 flex items-center gap-3 mb-1">
-            <div className="w-9 h-9 rounded-full bg-zinc-200 text-zinc-700 font-bold text-xs flex items-center justify-center shrink-0">
-              {session?.user?.name?.charAt(0).toUpperCase() || "A"}
+          <div className="p-2.5 rounded-xl bg-[#121624] border border-zinc-800/80 flex items-center gap-3 mb-1">
+            <div className="w-9 h-9 rounded-full bg-zinc-800 text-zinc-200 font-bold text-xs flex items-center justify-center shrink-0 border border-zinc-700/60 overflow-hidden">
+              {session?.user?.image ? (
+                <img
+                  src={session.user.image}
+                  alt={session.user.name || "Admin"}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                session?.user?.name?.charAt(0).toUpperCase() || "A"
+              )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-zinc-900 truncate">
+              <p className="text-xs font-semibold text-white truncate">
                 {session?.user?.name || "Alex Rivera"}
               </p>
-              <p className="text-[11px] text-zinc-500 truncate">Super Admin</p>
+              <p className="text-[11px] text-zinc-400 truncate">System Admin</p>
             </div>
           </div>
         )}

@@ -3,39 +3,45 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 export interface UserPremiumResponse {
   success?: boolean;
   premium: boolean;
-  user?: {
-    _id: string;
-    premium?: boolean;
-    email?: string;
-    name?: string;
-  } | null;
 }
 
-export const getUserPrmiumById = async (userId: string, email?: string): Promise<UserPremiumResponse> => {
+/**
+ * Check if a user has an active premium subscription.
+ * Safe to use in both Client Components and Server Components.
+ */
+export const getUserPremiumById = async (
+  userId?: string,
+  email?: string,
+): Promise<UserPremiumResponse> => {
+  if (!userId && !email) return { premium: false };
+
   try {
-    if (!userId && !email) {
-      console.warn("[getUserPrmiumById] Missing userId and email");
-      return { premium: false };
-    }
+    const query = email ? `?email=${encodeURIComponent(email)}` : "";
+    const res = await fetch(
+      `${BASE_URL}/users/${userId || "me"}/premium${query}`,
+      {
+        cache: "no-store",
+      },
+    );
 
-    const queryParams = new URLSearchParams();
-    if (email) queryParams.set("email", email);
-
-    const qs = queryParams.toString();
-    const url = `${BASE_URL}/users/${userId || "me"}/premium${qs ? `?${qs}` : ""}`;
-    const response = await fetch(url, {
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      console.error("[getUserPrmiumById] HTTP error status:", response.status);
-      return { premium: false };
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("[getUserPrmiumById] Fetch failed:", error);
+    return res.ok ? await res.json() : { premium: false };
+  } catch {
     return { premium: false };
+  }
+};
+
+// Alias for backward compatibility
+export const getUserPrmiumById = getUserPremiumById;
+
+/**
+ * Fetch all registered users from database via REST API.
+ * Safe to use in both Client Components and Server Components.
+ */
+export const getUsers = async () => {
+  try {
+    const res = await fetch(`${BASE_URL}/user`, { cache: "no-store" });
+    return res.ok ? await res.json() : [];
+  } catch {
+    return [];
   }
 };
