@@ -10,9 +10,6 @@ import {
   ArrowRight,
   Eye,
   EyeOff,
-  Briefcase,
-  UserCheck,
-  ShieldCheck,
   Loader2,
   AlertCircle,
 } from "lucide-react";
@@ -22,7 +19,6 @@ import { signIn, signUp, signOut } from "@/lib/auth-client";
 export default function SignUpForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState<"seeker" | "recruiter" | "admin">("seeker");
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -44,7 +40,6 @@ export default function SignUpForm() {
         name,
         email,
         password,
-        role,
       });
 
       if (error) {
@@ -105,48 +100,6 @@ export default function SignUpForm() {
           <span>{errorMsg}</span>
         </div>
       )}
-
-      {/* Role Selector (Seeker, Recruiter, Admin) */}
-      <div className="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-white/5 border border-white/10 mb-6">
-        <button
-          type="button"
-          onClick={() => setRole("seeker")}
-          className={`h-9 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-            role === "seeker"
-              ? "bg-[#5C53FE] text-white shadow-md"
-              : "text-zinc-400 hover:text-white"
-          }`}
-        >
-          <UserCheck className="w-3.5 h-3.5 shrink-0" />
-          <span>Seeker</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setRole("recruiter")}
-          className={`h-9 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-            role === "recruiter"
-              ? "bg-[#5C53FE] text-white shadow-md"
-              : "text-zinc-400 hover:text-white"
-          }`}
-        >
-          <Briefcase className="w-3.5 h-3.5 shrink-0" />
-          <span>Recruiter</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setRole("admin")}
-          className={`h-9 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-            role === "admin"
-              ? "bg-[#5C53FE] text-white shadow-md"
-              : "text-zinc-400 hover:text-white"
-          }`}
-        >
-          <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
-          <span>Admin</span>
-        </button>
-      </div>
 
       {/* One-click Google sign up */}
       <button

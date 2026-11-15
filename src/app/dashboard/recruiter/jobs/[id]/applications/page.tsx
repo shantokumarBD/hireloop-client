@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   ArrowLeft,
   Briefcase,
@@ -16,6 +16,7 @@ import { StatusBadge } from "@/app/components/shared/StatusBadge";
 import { JobTypeBadge } from "@/app/components/shared/JobTypeBadge";
 import { getSingleJob } from "@/lib/api/jobs";
 import { getJobApplications } from "@/lib/api/applications";
+import { getSession } from "@/lib/core/server";
 import { RecruiterJobApplicationsView } from "./components/RecruiterJobApplicationsView";
 
 interface RecruiterJobApplicationsPageProps {
@@ -27,15 +28,28 @@ export default async function RecruiterJobApplicationsPage({
 }: RecruiterJobApplicationsPageProps) {
   const { id } = await params;
 
-  // 1. Fetch Job and Applications concurrently
-  const [job, applications] = await Promise.all([
+  // 1. Fetch Session and Job
+  const [session, job] = await Promise.all([
+    getSession(),
     getSingleJob(id),
-    getJobApplications(id),
   ]);
 
   if (!job) {
     notFound();
   }
+
+  // 2. Ownership Guard: Only the job creator or an admin can access this page
+  const isOwner =
+    (job.recruiterId && job.recruiterId === session?.user?.id) ||
+    (job.recruiterEmail && job.recruiterEmail === session?.user?.email) ||
+    session?.user?.role === "admin";
+
+  if (!isOwner) {
+    redirect("/unauthorized");
+  }
+
+  // 3. Fetch applications for this job
+  const applications = await getJobApplications(id);
 
   return (
     <div className="max-w-[1400px] mx-auto space-y-6">

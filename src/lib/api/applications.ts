@@ -1,4 +1,5 @@
 import { Application } from "@/Types";
+import { authFetch } from "../core/server";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -24,7 +25,7 @@ export const getApplications = async (
       ? `${BASE_URL}/applications?${queryString}`
       : `${BASE_URL}/applications`;
 
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await authFetch(url);
 
     if (!res.ok) {
       console.error("[Applications API] HTTP Error:", res.status);

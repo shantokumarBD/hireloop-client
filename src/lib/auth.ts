@@ -17,14 +17,10 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: false,
   },
-  plugins: [admin()],
-  user: {
-    additionalFields: {
-      role: {
-        type: "string",
-        defaultValue: "seeker",
-        input: true,
-      },
-    },
-  },
+  plugins: [
+    admin({
+      defaultRole: "seeker",
+      adminRoles: ["admin"],
+    }),
+  ],
 });

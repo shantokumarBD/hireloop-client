@@ -46,6 +46,7 @@ export interface CreateJobInput {
   _id: string;
   title: string;
   recruiterId?: string;
+  recruiterEmail?: string;
   companyName: string;
   category: string;
   jobType: string;
