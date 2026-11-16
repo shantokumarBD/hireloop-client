@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Search, Briefcase, Building2, Users, Star } from "lucide-react";
+import { ROUTES } from "@/constants/routes";
 
 const trendingPositions = [
   "Product Designer",
@@ -41,7 +42,7 @@ export default function Hero() {
 
         {/* Search Form */}
         <form
-          action="/jobs"
+          action={ROUTES.BROWSE_JOBS}
           method="GET"
           className="mt-8 sm:mt-10 w-full h-[62px] sm:h-[64px] rounded-full bg-[#0B0C10] border border-white/10 shadow-2xl flex items-center px-2"
         >
@@ -101,7 +102,7 @@ export default function Hero() {
           {trendingPositions.map((tag) => (
             <Link
               key={tag}
-              href={`/jobs?search=${encodeURIComponent(tag)}`}
+              href={`${ROUTES.BROWSE_JOBS}?search=${encodeURIComponent(tag)}`}
               className="text-xs px-3.5 py-1.5 rounded-full bg-[#0E0F14] border border-white/10 text-zinc-300 hover:text-white hover:border-[#5C53FE] transition-colors"
             >
               {tag}

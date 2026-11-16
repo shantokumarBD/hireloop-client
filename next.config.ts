@@ -28,6 +28,15 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  async redirects() {
+    return [
+      {
+        source: "/jobs",
+        destination: "/browser-jobs",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

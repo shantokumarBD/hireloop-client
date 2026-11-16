@@ -3,11 +3,12 @@
 import React, { Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
 
 export const navItems = [
-  { name: "Browse Jobs", href: "/jobs" },
-  { name: "Company", href: "/companies" },
-  { name: "Pricing", href: "/pricing" },
+  { name: "Browse Jobs", href: ROUTES.BROWSE_JOBS },
+  { name: "Company", href: ROUTES.COMPANIES },
+  { name: "Pricing", href: ROUTES.PRICING },
 ];
 
 function NavLinksContent() {
