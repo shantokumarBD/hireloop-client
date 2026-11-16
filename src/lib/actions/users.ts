@@ -19,3 +19,23 @@ export const updateUserRole = async (userId: string, role: string) => {
     return null;
   }
 };
+
+export interface UserPremiumResponse {
+  success?: boolean;
+  premium: boolean;
+}
+
+export const getUserPremiumById = async (
+  userId?: string,
+  email?: string
+): Promise<UserPremiumResponse> => {
+  try {
+    const query = email ? `?email=${encodeURIComponent(email)}` : "";
+    const res = await authFetch(`${BASE_URL}/users/${userId || "me"}/premium${query}`);
+    return res.ok ? await res.json() : { premium: false };
+  } catch {
+    return { premium: false };
+  }
+};
+
+export const getUserPrmiumById = getUserPremiumById;

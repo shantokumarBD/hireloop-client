@@ -60,3 +60,29 @@ export const updateApplicationStatus = async (id: string, status: string) => {
     return null;
   }
 };
+
+export interface ApplicationCountResponse {
+  count: number;
+  limit: number | string;
+  limitReached: boolean;
+  remaining: number;
+  isPremium?: boolean;
+}
+
+export const getApplicationCount = async (
+  userId?: string,
+  email?: string
+): Promise<ApplicationCountResponse> => {
+  try {
+    const res = await authFetch(`${BASE_URL}/applications/count`);
+
+    if (!res.ok) {
+      return { count: 0, limit: 3, limitReached: false, remaining: 3 };
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error getting application count:", error);
+    return { count: 0, limit: 3, limitReached: false, remaining: 3 };
+  }
+};
