@@ -1,19 +1,23 @@
+"use server";
+
+import { authFetch } from "@/lib/core/server";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export const checkoutVerify = async (sessionId: string) => {
   try {
-    const res = await fetch(`${BASE_URL}/payment`, {
+    const res = await authFetch(`${BASE_URL}/payment`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({ sessionId }),
     });
 
     if (!res.ok) {
-      const errText = await res.text().catch(() => "");
-      console.error("[checkoutVerify] HTTP Error:", res.status, errText);
-      return { success: false, error: `Verification failed with status ${res.status}` };
+      const errData = await res.json().catch(() => null);
+      console.error("[checkoutVerify] HTTP Error:", res.status, errData);
+      return {
+        success: false,
+        error: errData?.message || `Verification failed with status ${res.status}`,
+      };
     }
 
     return await res.json();
