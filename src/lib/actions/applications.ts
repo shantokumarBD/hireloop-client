@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { authFetch } from "@/lib/core/server";
-import { Application } from "@/Types";
+import { Application } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 

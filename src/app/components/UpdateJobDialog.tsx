@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { updateJob } from "@/lib/actions/jobs";
-import { CreateJobInput } from "@/Types";
+import { CreateJobInput } from "@/types";
 import { toast } from "@/components/ui/toast";
 import {
   JOB_TYPES,

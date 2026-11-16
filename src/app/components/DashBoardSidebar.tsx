@@ -24,7 +24,7 @@ import {
   Home,
 } from "lucide-react";
 import Logo from "@/components/shared/Logo";
-import { Role, DashboardMenuItem } from "@/Types";
+import { Role, DashboardMenuItem } from "@/types";
 import { ROUTES } from "@/constants/routes";
 
 // Role-based menu configuration

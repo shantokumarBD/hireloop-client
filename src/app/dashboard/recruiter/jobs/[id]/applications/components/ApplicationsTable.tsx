@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Application } from "@/Types";
+import { Application } from "@/types";
 import { ApplicationStatusBadge } from "./ApplicationStatusBadge";
 import { Eye, Mail, ChevronDown } from "lucide-react";
 import { format } from "date-fns";

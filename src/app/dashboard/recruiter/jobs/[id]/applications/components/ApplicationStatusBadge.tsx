@@ -1,5 +1,5 @@
 import React from "react";
-import { ApplicationStatus } from "@/Types";
+import { ApplicationStatus } from "@/types";
 
 interface ApplicationStatusBadgeProps {
   status: ApplicationStatus | string;

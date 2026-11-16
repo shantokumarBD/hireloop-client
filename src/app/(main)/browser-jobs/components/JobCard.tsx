@@ -10,7 +10,7 @@ import {
   Building2,
   Sparkles,
 } from "lucide-react";
-import { CreateJobInput } from "@/Types";
+import { CreateJobInput } from "@/types";
 
 interface JobCardProps {
   job: Partial<CreateJobInput>;

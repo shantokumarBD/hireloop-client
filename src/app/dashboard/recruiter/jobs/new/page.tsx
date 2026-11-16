@@ -15,7 +15,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 
-import { CreateJobInput } from "@/Types";
+import { CreateJobInput } from "@/types";
 import { createJobs } from "@/lib/actions/jobs";
 import { toast } from "@/components/ui/toast";
 import { JOB_TYPES, CATEGORIES, SALARY_FREQUENCIES } from "@/constants/jobs";

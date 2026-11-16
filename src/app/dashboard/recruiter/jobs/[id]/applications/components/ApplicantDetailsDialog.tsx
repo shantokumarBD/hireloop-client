@@ -10,7 +10,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Application } from "@/Types";
+import { Application } from "@/types";
 import { ApplicationStatusBadge } from "./ApplicationStatusBadge";
 import {
   Mail,

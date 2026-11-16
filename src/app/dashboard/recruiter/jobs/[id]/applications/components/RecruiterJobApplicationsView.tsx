@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Application, CreateJobInput } from "@/Types";
+import { Application, CreateJobInput } from "@/types";
 import { ApplicationsTable } from "./ApplicationsTable";
 import { ApplicantDetailsDialog } from "./ApplicantDetailsDialog";
 import {

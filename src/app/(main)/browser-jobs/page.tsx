@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { getJobs } from "@/lib/api/jobs";
-import { CreateJobInput } from "@/Types";
+import { CreateJobInput } from "@/types";
 import { JobSearchBar } from "./components/JobSearchBar";
 import { JobFiltersSidebar } from "./components/JobFiltersSidebar";
 import { JobCard } from "./components/JobCard";

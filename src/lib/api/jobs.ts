@@ -1,4 +1,4 @@
-import { CreateJobInput } from "@/Types";
+import { CreateJobInput } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 

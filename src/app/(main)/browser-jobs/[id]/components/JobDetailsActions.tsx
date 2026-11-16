@@ -6,10 +6,10 @@ import { Bookmark, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
-import { CreateJobInput, CreateApplicationInput } from "@/Types";
+import { CreateJobInput, CreateApplicationInput } from "@/types";
 import { applyToJob } from "@/lib/actions/jobs";
-import { getApplicationCount } from "@/lib/api/applications";
-import { getUserPrmiumById } from "@/lib/api/user";
+import { getApplicationCount } from "@/lib/actions/applications";
+import { getUserPrmiumById } from "@/lib/actions/users";
 
 interface JobDetailsActionsProps {
   job: CreateJobInput;
