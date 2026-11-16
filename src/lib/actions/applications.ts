@@ -1,14 +1,55 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { authFetch } from "@/lib/core/server";
+import { Application } from "@/Types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
+export const getApplications = async (
+  userId?: string,
+  email?: string,
+  jobId?: string
+): Promise<Application[]> => {
+  try {
+    const params = new URLSearchParams();
+    if (userId && userId !== "undefined" && userId !== "null") {
+      params.append("userId", userId);
+    }
+    if (email && email !== "undefined" && email !== "null") {
+      params.append("email", email);
+    }
+    if (jobId && jobId !== "undefined" && jobId !== "null") {
+      params.append("jobId", jobId);
+    }
+
+    const queryString = params.toString();
+    const url = queryString
+      ? `${BASE_URL}/applications?${queryString}`
+      : `${BASE_URL}/applications`;
+
+    const res = await authFetch(url);
+
+    if (!res.ok) {
+      console.error("[Applications Action] HTTP Error:", res.status);
+      return [];
+    }
+
+    return await res.json();
+  } catch (error: any) {
+    console.error("[Applications Action] Fetch Exception:", error);
+    return [];
+  }
+};
+
+export const getJobApplications = async (jobId: string): Promise<Application[]> => {
+  return getApplications(undefined, undefined, jobId);
+};
+
 export const updateApplicationStatus = async (id: string, status: string) => {
   try {
-    const res = await fetch(`${BASE_URL}/applications/${id}`, {
+    const res = await authFetch(`${BASE_URL}/applications/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
     });
 

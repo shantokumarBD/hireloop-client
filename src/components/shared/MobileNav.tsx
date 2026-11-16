@@ -54,7 +54,31 @@ export default function MobileNav() {
             </div>
           </div>
 
-          {!user && (
+          {user ? (
+            <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+              <div className="flex items-center gap-3 min-w-0">
+                <img
+                  src={(user as any)?.imageUrl || user?.image || "/images/placeholder-avatar.svg"}
+                  alt={user.name || "User"}
+                  className="w-9 h-9 rounded-full object-cover border border-white/10 shrink-0"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = "/images/placeholder-avatar.svg";
+                  }}
+                />
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-white truncate">{user.name}</p>
+                  <p className="text-[11px] text-zinc-400 truncate">{user.email}</p>
+                </div>
+              </div>
+              <Link
+                href="/dashboard"
+                onClick={() => setOpen(false)}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#5E48FF] text-white shrink-0"
+              >
+                Dashboard
+              </Link>
+            </div>
+          ) : (
             <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
               <Link
                 href="/sign-in"

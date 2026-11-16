@@ -1,7 +1,7 @@
 "use server";
 
-import { success } from "better-auth";
 import { revalidatePath } from "next/cache";
+import { authFetch } from "@/lib/core/server";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -29,11 +29,8 @@ export const createJobs = async (formData: FormData) => {
   try {
     console.log("[Server Action] Sending POST to:", `${BASE_URL}/jobs`);
 
-    const res = await fetch(`${BASE_URL}/jobs`, {
+    const res = await authFetch(`${BASE_URL}/jobs`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(jobPayload),
     });
 
@@ -68,7 +65,7 @@ export const createJobs = async (formData: FormData) => {
 
 export const deleteJobs = async (jobId: string) => {
   try {
-    const res = await fetch(`${BASE_URL}/jobs/${jobId}`, {
+    const res = await authFetch(`${BASE_URL}/jobs/${jobId}`, {
       method: "DELETE",
     });
     revalidatePath("/dashboard/recruiter/jobs");
@@ -92,11 +89,8 @@ export const getSingleJob = async (jobId: string) => {
 
 export const updateJob = async (jobId: string, updateData: any) => {
   try {
-    const res = await fetch(`${BASE_URL}/jobs/${jobId}`, {
+    const res = await authFetch(`${BASE_URL}/jobs/${jobId}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(updateData),
     });
     revalidatePath("/dashboard/recruiter/jobs");
@@ -109,11 +103,8 @@ export const updateJob = async (jobId: string, updateData: any) => {
 
 export const applyToJob = async (data: any) => {
   try {
-    const res = await fetch(`${BASE_URL}/applications`, {
+    const res = await authFetch(`${BASE_URL}/applications`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(data),
     });
     return await res.json();

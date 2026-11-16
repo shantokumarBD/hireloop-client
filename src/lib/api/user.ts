@@ -1,3 +1,5 @@
+import { authFetch } from "../core/server";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export interface UserPremiumResponse {
@@ -35,11 +37,11 @@ export const getUserPrmiumById = getUserPremiumById;
 
 /**
  * Fetch all registered users from database via REST API.
- * Safe to use in both Client Components and Server Components.
+ * Protected: Only accessible by Admin.
  */
 export const getUsers = async () => {
   try {
-    const res = await fetch(`${BASE_URL}/user`, { cache: "no-store" });
+    const res = await authFetch(`${BASE_URL}/users`, { cache: "no-store" });
     return res.ok ? await res.json() : [];
   } catch {
     return [];

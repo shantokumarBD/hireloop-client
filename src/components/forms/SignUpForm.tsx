@@ -12,9 +12,11 @@ import {
   EyeOff,
   Loader2,
   AlertCircle,
+  Image as ImageIcon,
 } from "lucide-react";
 import Logo from "@/components/shared/Logo";
 import { signIn, signUp, signOut } from "@/lib/auth-client";
+import { uploadImageToImgBB } from "@/lib/actions/upload";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -22,6 +24,21 @@ export default function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  // On change handler for image uploading field
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+    } else {
+      setImageFile(null);
+      setImagePreview(null);
+    }
+  };
 
   // Form submit handler (try-finally pattern)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,10 +53,25 @@ export default function SignUpForm() {
     const password = formData.get("password") as string;
 
     try {
+      let imageUrl: string | undefined = undefined;
+
+      // If user selected an image, upload to ImgBB first
+      if (imageFile) {
+        const uploadData = new FormData();
+        uploadData.append("image", imageFile);
+        const uploadedUrl = await uploadImageToImgBB(uploadData);
+        if (!uploadedUrl) {
+          setErrorMsg("Failed to upload profile picture. Please try again.");
+          return;
+        }
+        imageUrl = uploadedUrl;
+      }
+
       const { data, error } = await signUp.email({
         name,
         email,
         password,
+        image: imageUrl,
       });
 
       if (error) {
@@ -162,6 +194,40 @@ export default function SignUpForm() {
               placeholder="John Doe"
               className="w-full h-11 pl-10 pr-3.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#5C53FE] transition-colors disabled:opacity-50"
             />
+          </div>
+        </div>
+
+        {/* Profile Picture Upload Field */}
+        <div>
+          <label
+            htmlFor="image"
+            className="block text-xs font-medium text-zinc-300 mb-1.5"
+          >
+            Profile picture <span className="text-zinc-500">(Optional)</span>
+          </label>
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 overflow-hidden">
+              {imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="Profile preview"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <ImageIcon className="w-5 h-5 text-zinc-500" />
+              )}
+            </div>
+            <div className="flex-1">
+              <input
+                id="image"
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleImageChange}
+                disabled={isLoading || isGoogleLoading}
+                className="w-full text-xs text-zinc-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-white/10 file:text-white hover:file:bg-white/15 file:cursor-pointer cursor-pointer border border-white/10 rounded-xl bg-white/5 p-1.5"
+              />
+            </div>
           </div>
         </div>
 

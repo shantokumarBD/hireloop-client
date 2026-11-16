@@ -43,11 +43,25 @@ export const getToken = async () => {
  return session.session.token;
 }
 
-export const authFetch = async (url: string) => {
+export const authFetch = async (url: string, options: RequestInit = {}) => {
   const token = await getToken();
-  return await fetch( url , {
+  return await fetch(url, {
+    ...options,
     headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+
+export const uploadImageToImgBB = async (formData: FormData) => {
+  const apiKey = process.env.IMGBB_API_KEY;
+  const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+    method: "POST",
+    body: formData,
+  });
+  const data = await res.json();
+  return data?.data?.url || null;
 };

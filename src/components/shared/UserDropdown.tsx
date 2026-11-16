@@ -12,6 +12,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LayoutDashboard, LogOut } from "lucide-react";
 import { UserSession } from "@/Types";
 
+const PLACEHOLDER_AVATAR = "/images/placeholder-avatar.svg";
+
 export default function UserDropdown({
   user,
   onSignOut,
@@ -19,24 +21,44 @@ export default function UserDropdown({
   user: UserSession;
   onSignOut: () => void;
 }) {
+  const imageUrl = (user as any)?.imageUrl || user?.image || PLACEHOLDER_AVATAR;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none cursor-pointer">
-        <Avatar className="w-9 h-9 border border-white/10 hover:border-[#5E48FF] transition-colors">
-          <AvatarImage src={user.image || undefined} alt={user.name || "User"} />
-          <AvatarFallback className="bg-[#5E48FF] text-white text-xs font-bold">
-            {user.name?.charAt(0) || "U"}
+        <Avatar className="w-9 h-9 border border-white/10 hover:border-[#5E48FF] transition-colors overflow-hidden">
+          <AvatarImage
+            src={imageUrl}
+            alt={user.name || "User"}
+            className="w-full h-full object-cover"
+          />
+          <AvatarFallback className="bg-zinc-800 p-0 overflow-hidden">
+            <img
+              src={PLACEHOLDER_AVATAR}
+              alt="Default avatar"
+              className="w-full h-full object-cover"
+            />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
         align="end"
-        className="w-48 bg-[#14151B] border-white/10 text-white rounded-xl shadow-xl"
+        className="w-52 bg-[#14151B] border-white/10 text-white rounded-xl shadow-xl p-1"
       >
-        <div className="p-2 text-xs">
-          <p className="font-bold truncate text-white">{user.name}</p>
-          <p className="text-zinc-400 truncate">{user.email}</p>
+        <div className="p-2 text-xs flex items-center gap-2.5">
+          <img
+            src={imageUrl}
+            alt={user.name || "User"}
+            className="w-8 h-8 rounded-full object-cover border border-white/10 shrink-0"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = PLACEHOLDER_AVATAR;
+            }}
+          />
+          <div className="min-w-0 flex-1">
+            <p className="font-bold truncate text-white">{user.name}</p>
+            <p className="text-zinc-400 truncate text-[11px]">{user.email}</p>
+          </div>
         </div>
 
         <DropdownMenuSeparator className="bg-white/10" />

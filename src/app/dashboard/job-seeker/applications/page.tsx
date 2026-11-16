@@ -26,7 +26,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useSession } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
 import { Application, ApplicationStatus } from "@/Types";
-import { getApplications } from "@/lib/api/applications";
+import { getApplications } from "@/lib/actions/applications";
 import { formatDistanceToNow, isValid } from "date-fns";
 
 export default function ApplicationsPage() {

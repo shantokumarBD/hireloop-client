@@ -21,6 +21,7 @@ import {
   Building2,
   LogOut,
   PlusCircle,
+  Home,
 } from "lucide-react";
 import Logo from "@/components/shared/Logo";
 import { Role, DashboardMenuItem } from "@/Types";
@@ -69,6 +70,12 @@ export function DashBoardSidebar() {
   const isDark = role === "seeker" || role === "admin";
   const menuItems = menuItemByRole[role];
 
+  const userName =
+    session?.user?.name ||
+    (role === "admin" ? "Admin" : role === "recruiter" ? "Recruiter" : "Job Seeker");
+  const userImage =
+    (session?.user as any)?.imageUrl || session?.user?.image || null;
+
   // Find best matching active menu item for current pathname
   const activeItem = menuItems
     .filter((item) => pathname === item.url || pathname.startsWith(item.url + "/"))
@@ -84,63 +91,83 @@ export function DashBoardSidebar() {
     >
       {/* Sidebar Header */}
       <SidebarHeader className={isDark ? "p-4 bg-[#0B0E14]" : "p-4 bg-white"}>
-        <Logo />
-        {/* Admin Console subtitle */}
-        {role === "admin" && (
-          <p className="text-xs text-zinc-500 font-medium -mt-2 px-1">
-            Admin Console
-          </p>
-        )}
+        {/* Top Header Row with Logo and explicit Home Link */}
+        <div className="flex items-center justify-between gap-2">
+          <Link href="/" className="inline-flex items-center" title="HireLoop Home">
+            <Logo />
+          </Link>
+          <Link
+            href="/"
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+              isDark
+                ? "text-zinc-400 hover:text-white hover:bg-zinc-800/80 border border-zinc-800"
+                : "text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100 border border-zinc-200"
+            }`}
+            title="Go to Home Page"
+          >
+            <Home className="w-3.5 h-3.5" />
+            <span>Home</span>
+          </Link>
+        </div>
+
+        {/* Display User Name and User Role in Header for all three types of users */}
+        <div
+          className={`mt-3 p-2.5 rounded-xl border flex items-center gap-2.5 ${
+            isDark
+              ? "bg-[#121624] border-zinc-800/80 text-white"
+              : "bg-zinc-50 border-zinc-200/90 text-zinc-900"
+          }`}
+        >
+          <div
+            className={`w-9 h-9 rounded-full font-bold text-xs flex items-center justify-center shrink-0 border overflow-hidden ${
+              isDark
+                ? "bg-zinc-800 text-zinc-200 border-zinc-700/60"
+                : "bg-zinc-200 text-zinc-700 border-zinc-300"
+            }`}
+          >
+            {userImage ? (
+              <img
+                src={userImage}
+                alt={userName}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src =
+                    "/images/placeholder-avatar.svg";
+                }}
+              />
+            ) : (
+              userName.charAt(0).toUpperCase() || "U"
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <p
+              className={`text-xs sm:text-sm font-semibold truncate leading-tight ${
+                isDark ? "text-white" : "text-zinc-900"
+              }`}
+            >
+              {userName}
+            </p>
+            <div className="flex items-center gap-1.5 mt-1">
+              <span
+                className={`px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider ${
+                  role === "admin"
+                    ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                    : role === "recruiter"
+                    ? "bg-[#5C53FE]/10 text-[#5C53FE] border border-[#5C53FE]/20"
+                    : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                }`}
+              >
+                {role === "seeker" ? "Job Seeker" : role}
+              </span>
+            </div>
+          </div>
+        </div>
       </SidebarHeader>
 
       <SidebarContent className={isDark ? "bg-[#0B0E14] px-2" : "bg-white px-2"}>
-        {/* Recruiter Top Profile Card */}
-        {role === "recruiter" && (
-          <div className="mx-2 mb-4 p-3 rounded-2xl bg-zinc-50 border border-zinc-200/90 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-zinc-200 text-zinc-700 font-bold text-sm flex items-center justify-center shrink-0">
-              {session?.user?.name?.charAt(0).toUpperCase() || "R"}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-zinc-900 truncate leading-tight">
-                {session?.user?.name || "Recruiter"}
-              </p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-xs text-zinc-500 font-medium">Recruiter</span>
-                <span className="px-1.5 py-0.5 rounded-md text-[10px] font-semibold bg-[#5C53FE]/10 text-[#5C53FE] border border-[#5C53FE]/20">
-                  Premium account
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Seeker Top Profile Card */}
-        {role === "seeker" && (
-          <div className="mx-2 mb-4 p-3 rounded-2xl bg-[#121624] border border-zinc-800/80 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-zinc-800 text-zinc-200 font-bold text-sm flex items-center justify-center shrink-0 border border-zinc-700/60 overflow-hidden">
-              {session?.user?.image ? (
-                <img
-                  src={session.user.image}
-                  alt={session.user.name || "User"}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                session?.user?.name?.charAt(0).toUpperCase() || "S"
-              )}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-white truncate leading-tight">
-                Seeker Portal
-              </p>
-              <p className="text-xs text-zinc-400 font-medium truncate mt-0.5">
-                Professional Tier
-              </p>
-            </div>
-          </div>
-        )}
-
         {/* Dynamic Navigation Menu Items */}
-        <nav className="flex flex-col gap-1 px-2">
+        <nav className="flex flex-col gap-1 px-2 pt-2">
           {menuItems.map((item) => {
             const isActive = activeItem?.url === item.url;
 
@@ -201,29 +228,6 @@ export function DashBoardSidebar() {
             : "p-4 border-t border-zinc-200/80 bg-white flex flex-col gap-3"
         }
       >
-        {/* Admin Bottom Profile Card */}
-        {role === "admin" && (
-          <div className="p-2.5 rounded-xl bg-[#121624] border border-zinc-800/80 flex items-center gap-3 mb-1">
-            <div className="w-9 h-9 rounded-full bg-zinc-800 text-zinc-200 font-bold text-xs flex items-center justify-center shrink-0 border border-zinc-700/60 overflow-hidden">
-              {session?.user?.image ? (
-                <img
-                  src={session.user.image}
-                  alt={session.user.name || "Admin"}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                session?.user?.name?.charAt(0).toUpperCase() || "A"
-              )}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-white truncate">
-                {session?.user?.name || "Alex Rivera"}
-              </p>
-              <p className="text-[11px] text-zinc-400 truncate">System Admin</p>
-            </div>
-          </div>
-        )}
-
         {/* Seeker Post Resume Button */}
         {role === "seeker" && (
           <Link

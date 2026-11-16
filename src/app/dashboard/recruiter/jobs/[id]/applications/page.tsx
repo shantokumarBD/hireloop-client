@@ -15,7 +15,7 @@ import { DashboardHeader } from "@/app/components/shared/DashboardHeader";
 import { StatusBadge } from "@/app/components/shared/StatusBadge";
 import { JobTypeBadge } from "@/app/components/shared/JobTypeBadge";
 import { getSingleJob } from "@/lib/api/jobs";
-import { getJobApplications } from "@/lib/api/applications";
+import { getJobApplications } from "@/lib/actions/applications";
 import { getSession } from "@/lib/core/server";
 import { RecruiterJobApplicationsView } from "./components/RecruiterJobApplicationsView";
 

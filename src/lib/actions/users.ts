@@ -1,14 +1,14 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { authFetch } from "@/lib/core/server";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export const updateUserRole = async (userId: string, role: string) => {
   try {
-    const res = await fetch(`${BASE_URL}/user/${userId}`, {
+    const res = await authFetch(`${BASE_URL}/users/${userId}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ role }),
     });
 
