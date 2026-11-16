@@ -25,33 +25,34 @@ import {
 } from "lucide-react";
 import Logo from "@/components/shared/Logo";
 import { Role, DashboardMenuItem } from "@/Types";
+import { ROUTES } from "@/constants/routes";
 
 // Role-based menu configuration
 const menuItemByRole: Record<Role, DashboardMenuItem[]> = {
   // Seeker Menu
   seeker: [
-    { name: "Dashboard", url: "/dashboard/job-seeker", icon: LayoutDashboard },
-    { name: "Jobs", url: "/dashboard/job-seeker/jobs", icon: Briefcase },
-    { name: "Saved Jobs", url: "/dashboard/job-seeker/saved", icon: Bookmark },
-    { name: "Applications", url: "/dashboard/job-seeker/applications", icon: FileText },
-    { name: "Billing", url: "/dashboard/job-seeker/billing", icon: CreditCard },
-    { name: "Settings", url: "/dashboard/job-seeker/settings", icon: Settings },
+    { name: "Dashboard", url: ROUTES.DASHBOARD.JOB_SEEKER, icon: LayoutDashboard },
+    { name: "Jobs", url: ROUTES.BROWSE_JOBS, icon: Briefcase },
+    { name: "Saved Jobs", url: ROUTES.DASHBOARD.JOB_SEEKER_SAVED, icon: Bookmark },
+    { name: "Applications", url: ROUTES.DASHBOARD.JOB_SEEKER_APPLICATIONS, icon: FileText },
+    { name: "Billing", url: ROUTES.DASHBOARD.JOB_SEEKER_BILLING, icon: CreditCard },
+    { name: "Settings", url: ROUTES.DASHBOARD.JOB_SEEKER_SETTINGS, icon: Settings },
   ],
   // Recruiter Menu
   recruiter: [
-    { name: "Dashboard", url: "/dashboard/recruiter", icon: LayoutDashboard },
-    { name: "Add Jobs", url: "/dashboard/recruiter/jobs/new", icon: PlusCircle },
-    { name: "Manage Jobs", url: "/dashboard/recruiter/jobs", icon: Briefcase },
-    { name: "Settings", url: "/dashboard/recruiter/settings", icon: Settings },
+    { name: "Dashboard", url: ROUTES.DASHBOARD.RECRUITER, icon: LayoutDashboard },
+    { name: "Add Jobs", url: ROUTES.DASHBOARD.RECRUITER_NEW_JOB, icon: PlusCircle },
+    { name: "Manage Jobs", url: ROUTES.DASHBOARD.RECRUITER_JOBS, icon: Briefcase },
+    { name: "Settings", url: ROUTES.DASHBOARD.RECRUITER_SETTINGS, icon: Settings },
   ],
   // Admin Menu
   admin: [
-    { name: "Dashboard", url: "/dashboard/admin", icon: LayoutDashboard },
-    { name: "Users", url: "/dashboard/admin/users", icon: Users },
-    { name: "Companies", url: "/dashboard/admin/companies", icon: Building2 },
-    { name: "Jobs", url: "/dashboard/admin/jobs", icon: Briefcase },
-    { name: "Payments", url: "/dashboard/admin/payments", icon: CreditCard },
-    { name: "Settings", url: "/dashboard/admin/settings", icon: Settings },
+    { name: "Dashboard", url: ROUTES.DASHBOARD.ADMIN, icon: LayoutDashboard },
+    { name: "Users", url: ROUTES.DASHBOARD.ADMIN_USERS, icon: Users },
+    { name: "Companies", url: ROUTES.DASHBOARD.ADMIN_COMPANIES, icon: Building2 },
+    { name: "Jobs", url: ROUTES.DASHBOARD.ADMIN_JOBS, icon: Briefcase },
+    { name: "Payments", url: ROUTES.DASHBOARD.ADMIN_PAYMENTS, icon: CreditCard },
+    { name: "Settings", url: ROUTES.DASHBOARD.ADMIN_SETTINGS, icon: Settings },
   ],
 };
 
@@ -231,7 +232,7 @@ export function DashBoardSidebar() {
         {/* Seeker Post Resume Button */}
         {role === "seeker" && (
           <Link
-            href="/dashboard/job-seeker/resume"
+            href={ROUTES.DASHBOARD.JOB_SEEKER_RESUME}
             className="w-full h-11 rounded-xl bg-white hover:bg-zinc-100 active:bg-zinc-200 text-zinc-950 text-sm font-semibold flex items-center justify-center transition-all shadow-sm cursor-pointer"
           >
             Post Resume
