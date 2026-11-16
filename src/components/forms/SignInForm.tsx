@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Mail, Lock, ArrowRight, Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
 import Logo from "@/components/shared/Logo";
 import { authClient, signIn } from "@/lib/auth-client";
+import { ROUTES } from "@/constants/routes";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -163,7 +164,7 @@ export default function SignInForm() {
               Password
             </label>
             <Link
-              href="/forgot-password"
+              href={ROUTES.FORGOT_PASSWORD}
               className="text-xs text-[#5C53FE] hover:underline"
             >
               Forgot password?

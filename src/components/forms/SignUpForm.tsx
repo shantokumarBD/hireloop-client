@@ -17,6 +17,7 @@ import {
 import Logo from "@/components/shared/Logo";
 import { signIn, signUp, signOut } from "@/lib/auth-client";
 import { uploadImageToImgBB } from "@/lib/actions/upload";
+import { ROUTES } from "@/constants/routes";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -299,11 +300,11 @@ export default function SignUpForm() {
           />
           <label htmlFor="terms" className="text-xs text-zinc-400 leading-snug">
             I agree to the{" "}
-            <Link href="/terms" className="text-[#5C53FE] hover:underline">
+            <Link href={ROUTES.TERMS} className="text-[#5C53FE] hover:underline">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href="/privacy" className="text-[#5C53FE] hover:underline">
+            <Link href={ROUTES.PRIVACY} className="text-[#5C53FE] hover:underline">
               Privacy Policy
             </Link>
           </label>

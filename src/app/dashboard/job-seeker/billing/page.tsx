@@ -17,6 +17,7 @@ import {
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useSession } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
+import { ROUTES } from "@/constants/routes";
 
 interface BillingInvoice {
   id: string;
@@ -383,7 +384,7 @@ export default function BillingPage() {
           </button>
 
           <Link
-            href="/terms"
+            href={ROUTES.TERMS}
             className="text-xs text-zinc-400 hover:text-white transition-colors"
           >
             Read Refund Policy
@@ -395,10 +396,10 @@ export default function BillingPage() {
       <div className="pt-4 pb-2 border-t border-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-500">
         <div>© 2023 HireLoop Inc. All rights reserved.</div>
         <div className="flex items-center gap-5">
-          <Link href="/terms" className="hover:text-zinc-400 transition-colors">
+          <Link href={ROUTES.TERMS} className="hover:text-zinc-400 transition-colors">
             Terms of Service
           </Link>
-          <Link href="/privacy" className="hover:text-zinc-400 transition-colors">
+          <Link href={ROUTES.PRIVACY} className="hover:text-zinc-400 transition-colors">
             Privacy Policy
           </Link>
         </div>
