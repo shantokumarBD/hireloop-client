@@ -20,11 +20,11 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { getJobs } from "@/lib/api/jobs";
-import DeleteJobDialog from "@/app/components/DeleteJobDialog";
-import UpdateJobDialog from "@/app/components/UpdateJobDialog";
-import { DashboardHeader } from "@/app/components/shared/DashboardHeader";
-import { StatusBadge } from "@/app/components/shared/StatusBadge";
-import { JobTypeBadge } from "@/app/components/shared/JobTypeBadge";
+import DeleteJobDialog from "@/components/dashboard/DeleteJobDialog";
+import UpdateJobDialog from "@/components/dashboard/UpdateJobDialog";
+import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
+import { StatusBadge } from "@/components/dashboard/StatusBadge";
+import { JobTypeBadge } from "@/components/dashboard/JobTypeBadge";
 import { getSession } from "@/lib/core/server";
 
 

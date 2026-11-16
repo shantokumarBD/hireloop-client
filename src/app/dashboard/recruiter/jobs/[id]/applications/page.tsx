@@ -11,9 +11,9 @@ import {
   Calendar,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DashboardHeader } from "@/app/components/shared/DashboardHeader";
-import { StatusBadge } from "@/app/components/shared/StatusBadge";
-import { JobTypeBadge } from "@/app/components/shared/JobTypeBadge";
+import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
+import { StatusBadge } from "@/components/dashboard/StatusBadge";
+import { JobTypeBadge } from "@/components/dashboard/JobTypeBadge";
 import { getSingleJob } from "@/lib/api/jobs";
 import { getJobApplications } from "@/lib/actions/applications";
 import { getSession } from "@/lib/core/server";

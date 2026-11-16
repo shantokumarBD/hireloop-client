@@ -2,7 +2,7 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
-import { DashBoardSidebar } from "@/app/components/DashBoardSidebar";
+import { DashBoardSidebar } from "@/components/dashboard/DashBoardSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
