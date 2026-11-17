@@ -2,6 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { authFetch } from "@/lib/core/server";
+import {
+  createJobClientSchema,
+  updateJobClientSchema,
+  createApplicationClientSchema,
+} from "@/schemas";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -24,14 +29,21 @@ export const createJobs = async (formData: FormData) => {
     createdAt: new Date().toISOString(),
   };
 
-  console.log("[Server Action] Parsed jobPayload:", jobPayload);
+  const validation = createJobClientSchema.safeParse(jobPayload);
+  if (!validation.success) {
+    const errorMsg = (validation.error.issues || []).map((i) => i.message).join(", ");
+    console.warn("[Server Action] Validation failed:", errorMsg);
+    return { success: false, error: errorMsg };
+  }
+
+  console.log("[Server Action] Parsed & validated jobPayload:", validation.data);
 
   try {
     console.log("[Server Action] Sending POST to:", `${BASE_URL}/jobs`);
 
     const res = await authFetch(`${BASE_URL}/jobs`, {
       method: "POST",
-      body: JSON.stringify(jobPayload),
+      body: JSON.stringify(validation.data),
     });
 
     if (!res.ok) {
@@ -88,24 +100,38 @@ export const getSingleJob = async (jobId: string) => {
 };
 
 export const updateJob = async (jobId: string, updateData: any) => {
+  const validation = updateJobClientSchema.safeParse(updateData);
+  if (!validation.success) {
+    const errorMsg = (validation.error.issues || []).map((i) => i.message).join(", ");
+    console.warn("[Server Action] Update job validation failed:", errorMsg);
+    return { success: false, error: errorMsg };
+  }
+
   try {
     const res = await authFetch(`${BASE_URL}/jobs/${jobId}`, {
       method: "PUT",
-      body: JSON.stringify(updateData),
+      body: JSON.stringify(validation.data),
     });
     revalidatePath("/dashboard/recruiter/jobs");
     return res.json();
   } catch (error) {
     console.log(error);
-    return { success: false };
+    return { success: false, error: "Failed to update job" };
   }
 };
 
 export const applyToJob = async (data: any) => {
+  const validation = createApplicationClientSchema.safeParse(data);
+  if (!validation.success) {
+    const errorMsg = (validation.error.issues || []).map((i) => i.message).join(", ");
+    console.warn("[Server Action] Apply job validation failed:", errorMsg);
+    return { success: false, error: errorMsg };
+  }
+
   try {
     const res = await authFetch(`${BASE_URL}/applications`, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify(validation.data),
     });
     return await res.json();
   } catch (error) {

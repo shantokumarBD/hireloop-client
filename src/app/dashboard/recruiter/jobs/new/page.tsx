@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 
 import { CreateJobInput } from "@/types";
 import { createJobs } from "@/lib/actions/jobs";
+import { createJobClientSchema } from "@/schemas";
 import { toast } from "@/components/ui/toast";
 import { JOB_TYPES, CATEGORIES, SALARY_FREQUENCIES } from "@/constants/jobs";
 import { useSession } from "@/lib/auth-client";
@@ -51,6 +52,31 @@ export default function PostNewJobPage() {
 
     if (recruiterId) {
       formData.append("recruiterId", recruiterId);
+    }
+
+    // Instant client-side Zod validation
+    const candidateData = {
+      title: (formData.get("title") as string)?.trim(),
+      recruiterId: recruiterId || "",
+      companyName: (formData.get("companyName") as string)?.trim(),
+      category: (formData.get("category") as string) || "",
+      jobType: (formData.get("jobType") as string) || "Full-Time",
+      isRemote: isRemote,
+      location: (formData.get("location") as string)?.trim(),
+      deadline: (formData.get("deadline") as string) || "",
+      salaryMin: Number(formData.get("salaryMin")) || 0,
+      salaryMax: Number(formData.get("salaryMax")) || 0,
+      salaryFrequency: (formData.get("salaryFrequency") as string) || "per hour",
+      responsibilities: (formData.get("responsibilities") as string)?.trim(),
+      requirements: (formData.get("requirements") as string)?.trim(),
+    };
+
+    const validation = createJobClientSchema.safeParse(candidateData);
+    if (!validation.success) {
+      const errorMsg = (validation.error.issues || []).map((i) => i.message).join(", ");
+      setErrorMsg(errorMsg);
+      setIsLoading(false);
+      return;
     }
 
     console.log("[Client] Submitting form...");

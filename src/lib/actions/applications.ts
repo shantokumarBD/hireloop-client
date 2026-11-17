@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { authFetch } from "@/lib/core/server";
 import { Application } from "@/types";
+import { updateApplicationStatusClientSchema } from "@/schemas";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -47,10 +48,17 @@ export const getJobApplications = async (jobId: string): Promise<Application[]> 
 };
 
 export const updateApplicationStatus = async (id: string, status: string) => {
+  const validation = updateApplicationStatusClientSchema.safeParse({ status });
+  if (!validation.success) {
+    const errorMsg = (validation.error.issues || []).map((i) => i.message).join(", ");
+    console.warn("[Server Action] Update application status validation failed:", errorMsg);
+    return { error: errorMsg };
+  }
+
   try {
     const res = await authFetch(`${BASE_URL}/applications/${id}`, {
       method: "PUT",
-      body: JSON.stringify({ status }),
+      body: JSON.stringify({ status: validation.data.status }),
     });
 
     revalidatePath("/dashboard/recruiter/jobs");

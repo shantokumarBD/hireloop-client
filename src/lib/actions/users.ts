@@ -2,14 +2,22 @@
 
 import { revalidatePath } from "next/cache";
 import { authFetch } from "@/lib/core/server";
+import { updateUserRoleClientSchema } from "@/schemas";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export const updateUserRole = async (userId: string, role: string) => {
+  const validation = updateUserRoleClientSchema.safeParse({ role });
+  if (!validation.success) {
+    const errorMsg = (validation.error.issues || []).map((i) => i.message).join(", ");
+    console.warn("[Server Action] Update user role validation failed:", errorMsg);
+    return { error: errorMsg };
+  }
+
   try {
     const res = await authFetch(`${BASE_URL}/users/${userId}`, {
       method: "PATCH",
-      body: JSON.stringify({ role }),
+      body: JSON.stringify({ role: validation.data.role }),
     });
 
     revalidatePath("/dashboard/admin/users");
