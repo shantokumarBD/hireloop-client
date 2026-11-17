@@ -18,16 +18,21 @@ export const requireRole = async (allowedRole: string | string[]) => {
     redirect("/sign-in");
   }
 
-  const userRole = session.user.role || "seeker";
-  const roles = Array.isArray(allowedRole) ? allowedRole : [allowedRole];
+  const userRole = (session.user.role || "seeker").toLowerCase();
+  const roles = (Array.isArray(allowedRole) ? allowedRole : [allowedRole]).map((r) =>
+    r.toLowerCase()
+  );
 
-  // 2. Role mismatch -> redirect to appropriate dashboard (admin can access all)
-  if (!roles.includes(userRole) && userRole !== "admin") {
-    if (userRole === "seeker") {
-      redirect("/dashboard/job-seeker");
+  // 2. Strict Role Isolation -> Redirect unauthorized roles to their designated home dashboard
+  if (!roles.includes(userRole)) {
+    if (userRole === "admin") {
+      redirect("/dashboard/admin");
     }
     if (userRole === "recruiter") {
       redirect("/dashboard/recruiter/jobs");
+    }
+    if (userRole === "seeker" || userRole === "job-seeker") {
+      redirect("/dashboard/job-seeker");
     }
     redirect("/");
   }

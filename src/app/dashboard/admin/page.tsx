@@ -1,9 +1,6 @@
-import React from 'react'
+import { redirect } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
 
-const page = () => {
-  return (
-    <div>page</div>
-  )
+export default function AdminDashboardRootPage() {
+  redirect(ROUTES.DASHBOARD.ADMIN_USERS);
 }
-
-export default page

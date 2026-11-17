@@ -1,9 +1,6 @@
-import React from 'react'
+import { redirect } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
 
-const page = () => {
-  return (
-    <div>page</div>
-  )
+export default function RecruiterDashboardRootPage() {
+  redirect(ROUTES.DASHBOARD.RECRUITER_JOBS);
 }
-
-export default page

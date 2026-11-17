@@ -61,12 +61,20 @@ export function DashBoardSidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Role detection from URL and session fallback
+  // Strict role detection: strictly derived from authenticated session
+  const sessionRole = ((session?.user as any)?.role || "").toLowerCase();
   const role: Role =
-    pathname.includes("recruiter") ? "recruiter" :
-    pathname.includes("admin") ? "admin" :
-    pathname.includes("job-seeker") ? "seeker" :
-    (session?.user?.role as Role) || "seeker";
+    sessionRole === "admin"
+      ? "admin"
+      : sessionRole === "recruiter"
+      ? "recruiter"
+      : sessionRole === "seeker" || sessionRole === "job-seeker"
+      ? "seeker"
+      : pathname.includes("recruiter")
+      ? "recruiter"
+      : pathname.includes("admin")
+      ? "admin"
+      : "seeker";
 
   const isDark = role === "seeker" || role === "admin";
   const menuItems = menuItemByRole[role];
